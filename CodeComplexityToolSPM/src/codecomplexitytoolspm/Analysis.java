@@ -12,8 +12,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -28,6 +31,7 @@ public class Analysis extends javax.swing.JFrame {
     
     private Dimension dimension = null;
     private static String filePath = null;
+    private ArrayList<ProgramStatement> resultSet = null;   
 
     /**
      * Creates new form MainUI
@@ -39,29 +43,37 @@ public class Analysis extends javax.swing.JFrame {
         this.setLocation(dimension.width/2-this.getSize().width/2, dimension.height/2-this.getSize().height/2);
         this.filePath = FilePath;
         
-        currentCodeTextArea.setText(filePath);
         readFile();
+        
+        displayFile();
         
         
     }
     
     final public void readFile(){
+        
+        resultSet = new ArrayList<ProgramStatement>();
 
         try {
             
             final File file1 = new File(filePath);
             final FileReader fileReader = new FileReader(file1); 
             final BufferedReader bufferReader = new BufferedReader(fileReader); //Creation of BufferedReader object
-            String string;
-            int count = 0;   //Intialize the word to zero
+            String line;
+            int count = 1;   //Intialize the word to zero
             
          
              
-            while((string = bufferReader.readLine()) != null) //Reading Content from the file
+            while((line = bufferReader.readLine()) != null) //Reading Content from the file
             {
-                currentCodeTextArea.append(string);
-                currentCodeTextArea.append("\n");
+                ProgramStatement ps = new ProgramStatement();
+                ps.setLineNumber(count);
+                ps.setLineContent(line);
+                
+                resultSet.add(ps);
+                
                 count++;
+                
             }  
             
             fileReader.close();
@@ -72,6 +84,18 @@ public class Analysis extends javax.swing.JFrame {
             Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        
+    }
+    
+    final public void displayFile(){
+        
+        for (ProgramStatement ps : resultSet) { 		      
+           
+            currentCodeTextArea.append(String.valueOf(ps.getLineNumber()));
+            currentCodeTextArea.append("\t");
+            currentCodeTextArea.append(ps.getLineContent());
+            currentCodeTextArea.append("\n");
+        }
         
     }
 
