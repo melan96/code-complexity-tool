@@ -5,17 +5,27 @@
  */
 package codecomplexitytoolspm;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 /**
  *
  * @author melan
  */
 public class MainUI extends javax.swing.JFrame {
+    
+    private Dimension dimension = null;
 
     /**
      * Creates new form MainUI
      */
     public MainUI() {
         initComponents();
+        
+        dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dimension.width/2-this.getSize().width/2, dimension.height/2-this.getSize().height/2);
+        
+        
     }
 
     /**
