@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 public class MainUI extends javax.swing.JFrame {
     
     private Dimension dimension = null;
-    private String filePath = null;
 
     /**
      * Creates new form MainUI
@@ -48,7 +47,7 @@ public class MainUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         setFilePathButton = new javax.swing.JButton();
         filePathTextField = new javax.swing.JTextField();
-        setFilePathButton1 = new javax.swing.JButton();
+        importFileButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1280, 720));
@@ -80,13 +79,13 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        setFilePathButton1.setBackground(new java.awt.Color(119, 255, 94));
-        setFilePathButton1.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
-        setFilePathButton1.setForeground(new java.awt.Color(1, 1, 1));
-        setFilePathButton1.setText("Import File");
-        setFilePathButton1.addActionListener(new java.awt.event.ActionListener() {
+        importFileButton.setBackground(new java.awt.Color(119, 255, 94));
+        importFileButton.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        importFileButton.setForeground(new java.awt.Color(1, 1, 1));
+        importFileButton.setText("Import File");
+        importFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setFilePathButton1ActionPerformed(evt);
+                importFileButtonActionPerformed(evt);
             }
         });
 
@@ -105,7 +104,7 @@ public class MainUI extends javax.swing.JFrame {
                         .addGap(35, 35, 35)
                         .addComponent(setFilePathButton)
                         .addGap(18, 18, 18)
-                        .addComponent(setFilePathButton1)
+                        .addComponent(importFileButton)
                         .addGap(70, 70, 70))))
         );
         JPannelMainLayout.setVerticalGroup(
@@ -117,7 +116,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(setFilePathButton, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
-                        .addComponent(setFilePathButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
+                        .addComponent(importFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
                     .addComponent(filePathTextField))
                 .addContainerGap(268, Short.MAX_VALUE))
         );
@@ -155,19 +154,30 @@ public class MainUI extends javax.swing.JFrame {
 
         }
         catch(Exception e){
-            JOptionPane newOptionPane = new JOptionPane("Error:Exception occured", JOptionPane.ERROR_MESSAGE);
+            JOptionPane newOptionPane = new JOptionPane("Exited without selecting file", JOptionPane.ERROR_MESSAGE);
             final JDialog newDialog = newOptionPane.createDialog("Warning");
             newDialog.setAlwaysOnTop(true);
             newDialog.setVisible(true);
-            e.printStackTrace();
 
         }
     }//GEN-LAST:event_setFilePathButtonActionPerformed
 
-    private void setFilePathButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setFilePathButton1ActionPerformed
-        filePath = setFilePathButton.getText();
+    private void importFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFileButtonActionPerformed
+        final String filePath = filePathTextField.getText();
         
-    }//GEN-LAST:event_setFilePathButton1ActionPerformed
+        if(filePath.isEmpty()){
+            JOptionPane newOptionPane = new JOptionPane("Please select the file path to import", JOptionPane.ERROR_MESSAGE);
+            final JDialog newDialog = newOptionPane.createDialog("Warning");
+            newDialog.setAlwaysOnTop(true);
+            newDialog.setVisible(true); 
+        }
+        else{
+            final Analysis analysis = new Analysis(filePath);
+            this.enable(false);
+            analysis.setVisible(true);
+        }
+        
+    }//GEN-LAST:event_importFileButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,8 +217,8 @@ public class MainUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPannelMain;
     private javax.swing.JTextField filePathTextField;
+    private javax.swing.JButton importFileButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton setFilePathButton;
-    private javax.swing.JButton setFilePathButton1;
     // End of variables declaration//GEN-END:variables
 }
