@@ -51,7 +51,7 @@ public class CncCalculation {
 
     }
 
-    public void coreBracketMapper() {
+    public ArrayList<Integer> coreBracketMapper() {
         
         //REGX PatternCompiler Heads
         Pattern bracketsPattern = Pattern.compile(bracketsREGX);
@@ -88,12 +88,14 @@ public class CncCalculation {
             }
             cncPoints.add(count);
         }
-    }
-
-    public ArrayList<Integer> getCnc() {
-        coreBracketMapper();
+        
         return cncPoints;
     }
+
+//    public ArrayList<Integer> getCnc() {
+//        coreBracketMapper();
+//        return cncPoints;
+//    }
 
     public int getTotalCncPoints() {
         int total = 0;

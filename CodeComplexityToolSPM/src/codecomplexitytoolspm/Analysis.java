@@ -105,7 +105,7 @@ public class Analysis extends javax.swing.JFrame {
         //Const init 
         cncCalculation = new CncCalculation(resultSet);
 
-        ArrayList<Integer> Cnc_units = cncCalculation.getCnc();
+        ArrayList<Integer> Cnc_units = cncCalculation.coreBracketMapper();
 
         for (int i = 0; i < Cnc_units.size(); i++) {
             System.out.println("\t" + (i + 1) + " Line has " + Cnc_units.get(i) + " Cnc");
