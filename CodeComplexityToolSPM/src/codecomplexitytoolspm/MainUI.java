@@ -7,6 +7,12 @@ package codecomplexitytoolspm;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,6 +46,7 @@ public class MainUI extends javax.swing.JFrame {
         JPannelMain = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        filePathTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1280, 720));
@@ -58,26 +65,45 @@ public class MainUI extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(1, 1, 1));
         jButton1.setText("Import .java file");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        filePathTextField.setEditable(false);
+        filePathTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filePathTextFieldActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPannelMainLayout = new javax.swing.GroupLayout(JPannelMain);
         JPannelMain.setLayout(JPannelMainLayout);
         JPannelMainLayout.setHorizontalGroup(
             JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPannelMainLayout.createSequentialGroup()
-                .addContainerGap(340, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(282, 282, 282))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPannelMainLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(305, 305, 305))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPannelMainLayout.createSequentialGroup()
+                        .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))))
         );
         JPannelMainLayout.setVerticalGroup(
             JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPannelMainLayout.createSequentialGroup()
                 .addGap(105, 105, 105)
                 .addComponent(jLabel1)
-                .addGap(48, 48, 48)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(246, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(filePathTextField))
+                .addContainerGap(268, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -93,6 +119,34 @@ public class MainUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void filePathTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePathTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_filePathTextFieldActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        
+        final JFileChooser fc = new JFileChooser();
+        fc.showOpenDialog(this);
+
+        try{
+            final File file = fc.getSelectedFile();
+            String path = file.getAbsolutePath();
+            path = path.replace('\\', '/');
+
+            filePathTextField.setText(path);
+
+        }
+        catch(Exception e){
+            JOptionPane newOptionPane = new JOptionPane("Error:Exception occured", JOptionPane.ERROR_MESSAGE);
+            final JDialog newDialog = newOptionPane.createDialog("Warning");
+            newDialog.setAlwaysOnTop(true);
+            newDialog.setVisible(true);
+            e.printStackTrace();
+
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -131,6 +185,7 @@ public class MainUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPannelMain;
+    private javax.swing.JTextField filePathTextField;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
