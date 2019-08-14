@@ -7,9 +7,15 @@ package codecomplexitytoolspm;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -34,6 +40,37 @@ public class Analysis extends javax.swing.JFrame {
         this.filePath = FilePath;
         
         currentCodeTextArea.setText(filePath);
+        readFile();
+        
+        
+    }
+    
+    final public void readFile(){
+
+        try {
+            
+            final File file1 = new File(filePath);
+            final FileReader fileReader = new FileReader(file1); 
+            final BufferedReader bufferReader = new BufferedReader(fileReader); //Creation of BufferedReader object
+            String string;
+            int count = 0;   //Intialize the word to zero
+            
+         
+             
+            while((string = bufferReader.readLine()) != null) //Reading Content from the file
+            {
+                currentCodeTextArea.append(string);
+                currentCodeTextArea.append("\n");
+                count++;
+            }  
+            
+            fileReader.close();
+     
+            
+        }
+        catch (IOException ex) {
+            Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
     }
