@@ -5,6 +5,7 @@
  */
 package cnC_calculation;
 
+import codecomplexitytoolspm.ProgramStatement;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
@@ -17,54 +18,69 @@ import java.util.regex.Matcher;
 public class CncCalculation {
 
     //var base
-    ArrayList<String> lineOfCode;
+    ArrayList<ProgramStatement> lineOfCodeList;
     ArrayList<Integer> cncPoints;
-    static LinkedHashMap<Integer, Integer> cncLinePoint = new LinkedHashMap<Integer, Integer>();
-    int bracketState = 0; //initially bracket state at globle value map
+    //static LinkedHashMap<Integer, Integer> cncLinePoint = new LinkedHashMap<Integer, Integer>();
+    Integer bracketState = 0; //initially bracket state at globle value map
 
     //REGX block
-    String openBracketsREGX = "\\{";
-    String closedBracketREGX = "\\}";
+    
     String bracketsREGX = "\\b((if|while|for|do)(\\s+|\\().*\\{)";
     String singleLineREGX = "^(\\s*\\}\\s*)|^(\\s*)$";
+    String openBracketsREGX = "\\{";
+    String closedBracketREGX = "\\}";
 
-    public CncCalculation(ArrayList<String> lineOfCode) {
-        this.lineOfCode = lineOfCode;
-        cncPoints = new ArrayList<Integer>(lineOfCode.size());
+    //Initialize LINE_OF_CODE 
+    public CncCalculation(ArrayList<ProgramStatement> lineOfCodeList) {
+        this.lineOfCodeList = lineOfCodeList;
+        cncPoints = new ArrayList<Integer>(lineOfCodeList.size());
     }
 
     public void incrementBracketState() {
         System.out.println("increment state CNC");
-        this.bracketState++;
+        bracketState++;
     }
 
     public void decrementBracketState() {
 
         System.out.println("Decrement state CNC");
-        this.bracketState--;
+        
+        if(this.bracketState > 0){
+            bracketState--;
+        }
 
     }
 
     public void coreBracketMapper() {
+        
+        //REGX PatternCompiler Heads
         Pattern bracketsPattern = Pattern.compile(bracketsREGX);
         Pattern bracketsSingle = Pattern.compile(singleLineREGX);
         Pattern bracketsClosed = Pattern.compile(closedBracketREGX);
 
         // Check each line for Cnc
-        for (int i = 0; i < lineOfCode.size(); i++) {
+        for (int i = 0; i < lineOfCodeList.size(); i++) {
             int count = 0;
-            String line = lineOfCode.get(i);
+            
+            //Fetch String Content
+            String line = lineOfCodeList.get(i).getLineContent();
+            
             // check for conditions and loops
             Matcher matcher = bracketsPattern.matcher(line);
             while (matcher.find()) {
                 incrementBracketState();
+                
             }
+            
             count = bracketState;
 
             Matcher close_m = bracketsClosed.matcher(line);
             while (close_m.find()) {
                 decrementBracketState();
             }
+            
+            count = bracketState;
+            
             // check for lines with brackets or empty line
             Matcher singleline = bracketsSingle.matcher(line);
             if (singleline.find()) {
