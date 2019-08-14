@@ -50,7 +50,7 @@ public class Analysis extends javax.swing.JFrame {
         
     }
     
-    final public void readFile(){
+    final public ArrayList<ProgramStatement> readFile(){
         
         resultSet = new ArrayList<ProgramStatement>();
 
@@ -77,14 +77,14 @@ public class Analysis extends javax.swing.JFrame {
             }  
             
             fileReader.close();
-     
+            
             
         }
         catch (IOException ex) {
             Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
+        return resultSet;
     }
     
     final public void displayFile(){
