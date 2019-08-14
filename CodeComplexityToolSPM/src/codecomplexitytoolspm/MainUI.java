@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 public class MainUI extends javax.swing.JFrame {
     
     private Dimension dimension = null;
+    private String filePath = null;
 
     /**
      * Creates new form MainUI
@@ -45,8 +46,9 @@ public class MainUI extends javax.swing.JFrame {
 
         JPannelMain = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        setFilePathButton = new javax.swing.JButton();
         filePathTextField = new javax.swing.JTextField();
+        setFilePathButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1280, 720));
@@ -61,13 +63,13 @@ public class MainUI extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(241, 241, 241));
         jLabel1.setText("Check Complexity ");
 
-        jButton1.setBackground(new java.awt.Color(119, 255, 94));
-        jButton1.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(1, 1, 1));
-        jButton1.setText("Import .java file");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        setFilePathButton.setBackground(new java.awt.Color(119, 255, 94));
+        setFilePathButton.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        setFilePathButton.setForeground(new java.awt.Color(1, 1, 1));
+        setFilePathButton.setText("Set File Path");
+        setFilePathButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                setFilePathButtonActionPerformed(evt);
             }
         });
 
@@ -78,11 +80,21 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
+        setFilePathButton1.setBackground(new java.awt.Color(119, 255, 94));
+        setFilePathButton1.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        setFilePathButton1.setForeground(new java.awt.Color(1, 1, 1));
+        setFilePathButton1.setText("Import File");
+        setFilePathButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setFilePathButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPannelMainLayout = new javax.swing.GroupLayout(JPannelMain);
         JPannelMain.setLayout(JPannelMainLayout);
         JPannelMainLayout.setHorizontalGroup(
             JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPannelMainLayout.createSequentialGroup()
+            .addGroup(JPannelMainLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPannelMainLayout.createSequentialGroup()
@@ -91,8 +103,10 @@ public class MainUI extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPannelMainLayout.createSequentialGroup()
                         .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19))))
+                        .addComponent(setFilePathButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(setFilePathButton1)
+                        .addGap(70, 70, 70))))
         );
         JPannelMainLayout.setVerticalGroup(
             JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,7 +115,9 @@ public class MainUI extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(26, 26, 26)
                 .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(setFilePathButton, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                        .addComponent(setFilePathButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
                     .addComponent(filePathTextField))
                 .addContainerGap(268, Short.MAX_VALUE))
         );
@@ -124,7 +140,7 @@ public class MainUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_filePathTextFieldActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void setFilePathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setFilePathButtonActionPerformed
         
         
         final JFileChooser fc = new JFileChooser();
@@ -146,7 +162,12 @@ public class MainUI extends javax.swing.JFrame {
             e.printStackTrace();
 
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_setFilePathButtonActionPerformed
+
+    private void setFilePathButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setFilePathButton1ActionPerformed
+        filePath = setFilePathButton.getText();
+        
+    }//GEN-LAST:event_setFilePathButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,7 +207,8 @@ public class MainUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPannelMain;
     private javax.swing.JTextField filePathTextField;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton setFilePathButton;
+    private javax.swing.JButton setFilePathButton1;
     // End of variables declaration//GEN-END:variables
 }
