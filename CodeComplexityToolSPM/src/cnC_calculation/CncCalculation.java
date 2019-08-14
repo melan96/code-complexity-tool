@@ -5,6 +5,7 @@
  */
 package cnC_calculation;
 
+import codecomplexitytoolspm.Analysis;
 import codecomplexitytoolspm.ProgramStatement;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -18,7 +19,6 @@ import java.util.regex.Matcher;
 public class CncCalculation {
 
     //var base
-    ArrayList<ProgramStatement> lineOfCodeList;
     ArrayList<Integer> cncPoints;
     //static LinkedHashMap<Integer, Integer> cncLinePoint = new LinkedHashMap<Integer, Integer>();
     Integer bracketState = 0; //initially bracket state at globle value map
@@ -31,9 +31,9 @@ public class CncCalculation {
     String closedBracketREGX = "\\}";
 
     //Initialize LINE_OF_CODE 
-    public CncCalculation(ArrayList<ProgramStatement> lineOfCodeList) {
-        this.lineOfCodeList = lineOfCodeList;
-        cncPoints = new ArrayList<Integer>(lineOfCodeList.size());
+    public CncCalculation() {//ArrayList<ProgramStatement> lineOfCodeList
+//        this.lineOfCodeList = lineOfCodeList;
+        cncPoints = new ArrayList<Integer>(Analysis.resultSet.size());
     }
 
     public void incrementBracketState() {
@@ -59,11 +59,11 @@ public class CncCalculation {
         Pattern bracketsClosed = Pattern.compile(closedBracketREGX);
 
         // Check each line for Cnc
-        for (int i = 0; i < lineOfCodeList.size(); i++) {
+        for (int i = 0; i < Analysis.resultSet.size(); i++) {
             int count = 0;
             
             //Fetch String Content
-            String line = lineOfCodeList.get(i).getLineContent();
+            String line = Analysis.resultSet.get(i).getLineContent();
             
             // check for conditions and loops
             Matcher matcher = bracketsPattern.matcher(line);
@@ -89,13 +89,9 @@ public class CncCalculation {
             cncPoints.add(count);
         }
         
+        setCnCValuesToHashMap();
         return cncPoints;
     }
-
-//    public ArrayList<Integer> getCnc() {
-//        coreBracketMapper();
-//        return cncPoints;
-//    }
 
     public int getTotalCncPoints() {
         int total = 0;
@@ -105,6 +101,12 @@ public class CncCalculation {
         }
 
         return total;
+    }
+    
+    public void setCnCValuesToHashMap() {
+        for (int i = 0; i < cncPoints.size(); i++) {
+            Analysis.resultSet.get(i).setCncValue(cncPoints.get(i));
+        }
     }
 
 }

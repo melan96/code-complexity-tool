@@ -32,7 +32,7 @@ public class Analysis extends javax.swing.JFrame {
 
     private Dimension dimension = null;
     private static String filePath = null;
-    private ArrayList<ProgramStatement> resultSet = null;
+    public static ArrayList<ProgramStatement> resultSet = null;
 
     //Calculation Classes
     CncCalculation cncCalculation = null;
@@ -88,22 +88,26 @@ public class Analysis extends javax.swing.JFrame {
 
     final public void displayFile() {
 
+        calculateCnCValues(resultSet);
+        
         for (ProgramStatement ps : resultSet) {
 
             currentCodeTextArea.append(String.valueOf(ps.getLineNumber()));
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(ps.getLineContent());
-            currentCodeTextArea.append("\n");
+            currentCodeTextArea.append("\t");
+            currentCodeTextArea.append(String.valueOf(ps.getCncValue()));
+              currentCodeTextArea.append("\n");
         }
 
-        calculateCnCValues(resultSet);
+        
 
     }
 
     public void calculateCnCValues(ArrayList<ProgramStatement> resultSet) {
 
         //Const init 
-        cncCalculation = new CncCalculation(resultSet);
+        cncCalculation = new CncCalculation();
 
         ArrayList<Integer> Cnc_units = cncCalculation.coreBracketMapper();
 
