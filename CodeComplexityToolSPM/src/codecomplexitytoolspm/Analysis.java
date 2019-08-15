@@ -23,6 +23,13 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.FileOutputStream;
+import export_result_pdf.*;
 
 /**
  *
@@ -97,7 +104,7 @@ public class Analysis extends javax.swing.JFrame {
             currentCodeTextArea.append(ps.getLineContent());
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(String.valueOf(ps.getCncValue()));
-              currentCodeTextArea.append("\n");
+            currentCodeTextArea.append("\n");
         }
 
         
@@ -131,6 +138,7 @@ public class Analysis extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         currentCodeTextArea = new javax.swing.JTextArea();
+        pdfExportBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 720));
@@ -147,6 +155,13 @@ public class Analysis extends javax.swing.JFrame {
         currentCodeTextArea.setRows(5);
         jScrollPane1.setViewportView(currentCodeTextArea);
 
+        pdfExportBtn.setText("Export Result as PDF");
+        pdfExportBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfExportBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPannelMainLayout = new javax.swing.GroupLayout(JPannelMain);
         JPannelMain.setLayout(JPannelMainLayout);
         JPannelMainLayout.setHorizontalGroup(
@@ -159,6 +174,10 @@ public class Analysis extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPannelMainLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pdfExportBtn)
+                .addGap(224, 224, 224))
         );
         JPannelMainLayout.setVerticalGroup(
             JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,8 +185,10 @@ public class Analysis extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pdfExportBtn)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -183,6 +204,51 @@ public class Analysis extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pdfExportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportBtnActionPerformed
+        // TODO add your handling code here:
+        //PDf Handling Code - @melan96
+        
+        
+             String TITLE = "TestReport"+new Date().toString();
+             String PDF_EXTENSION = ".pdf";
+             
+             
+              ArrayList<ProgramStatement> dataObjList = resultSet;
+              
+              Document document = null;
+        try {
+        //Document is not auto-closable hence need to close it separately
+            document = new Document(PageSize.A4);            
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(
+                    new File(TITLE + PDF_EXTENSION)));
+            HeaderFooter event = new HeaderFooter();
+            event.setHeader("Test Report");
+            writer.setPageEvent(event);
+            document.open();
+            PDFCreator.addMetaData(document, TITLE);
+            PDFCreator.addTitlePage(document, TITLE);
+            PDFCreator.addContent(document, dataObjList);
+            
+        }catch (DocumentException e) {
+            e.printStackTrace();
+            System.out.println("FileNotFoundException occurs.." + e.getMessage());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(null != document){
+                document.close();
+            }
+        }
+              
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_pdfExportBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,5 +291,6 @@ public class Analysis extends javax.swing.JFrame {
     private javax.swing.JTextArea currentCodeTextArea;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton pdfExportBtn;
     // End of variables declaration//GEN-END:variables
 }
