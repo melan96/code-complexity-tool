@@ -5,6 +5,7 @@
  */
 package codecomplexitytoolspm;
 
+import cnC_calculation.CncCalculation;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
@@ -28,75 +29,94 @@ import javax.swing.JOptionPane;
  * @author melan
  */
 public class Analysis extends javax.swing.JFrame {
-    
+
     private Dimension dimension = null;
     private static String filePath = null;
-    public static ArrayList<ProgramStatement> resultSet = null;   
+    
+    public static ArrayList<ProgramStatement> resultSet = null;
+
+    //Calculation Classes
+    CncCalculation cncCalculation = null;
 
     /**
      * Creates new form MainUI
      */
     public Analysis(String FilePath) {
         initComponents();
-        
+
         dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dimension.width/2-this.getSize().width/2, dimension.height/2-this.getSize().height/2);
+        this.setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
         this.filePath = FilePath;
-        
+
         readFile();
-        
+
         displayFile();
-        
-        
+
     }
-    
-    final public void readFile(){
-        
+
+    final public ArrayList<ProgramStatement> readFile() {
+
         resultSet = new ArrayList<ProgramStatement>();
 
         try {
-            
+
             final File file1 = new File(filePath);
-            final FileReader fileReader = new FileReader(file1); 
+            final FileReader fileReader = new FileReader(file1);
             final BufferedReader bufferReader = new BufferedReader(fileReader); //Creation of BufferedReader object
             String line;
             int count = 1;   //Intialize the word to zero
-            
-         
-             
-            while((line = bufferReader.readLine()) != null) //Reading Content from the file
+
+            while ((line = bufferReader.readLine()) != null) //Reading Content from the file
             {
                 ProgramStatement ps = new ProgramStatement();
                 ps.setLineNumber(count);
                 ps.setLineContent(line);
-                
+
                 resultSet.add(ps);
-                
+
                 count++;
-                
-            }  
-            
+
+            }
+
             fileReader.close();
-     
-            
-        }
-        catch (IOException ex) {
+
+        } catch (IOException ex) {
             Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
+        return resultSet;
     }
-    
-    final public void displayFile(){
+
+    final public void displayFile() {
+
+        calculateCnCValues(resultSet);
         
-        for (ProgramStatement ps : resultSet) { 		      
-           
+        for (ProgramStatement ps : resultSet) {
+
             currentCodeTextArea.append(String.valueOf(ps.getLineNumber()));
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(ps.getLineContent());
-            currentCodeTextArea.append("\n");
+            currentCodeTextArea.append("\t");
+            currentCodeTextArea.append(String.valueOf(ps.getCncValue()));
+              currentCodeTextArea.append("\n");
         }
+
         
+
+    }
+
+    public void calculateCnCValues(ArrayList<ProgramStatement> resultSet) {
+
+        //Const init 
+        cncCalculation = new CncCalculation();
+
+        ArrayList<Integer> Cnc_units = cncCalculation.coreBracketMapper();
+
+        for (int i = 0; i < Cnc_units.size(); i++) {
+            System.out.println("\t" + (i + 1) + " Line has " + Cnc_units.get(i) + " Cnc");
+        }
+
+        System.out.println("Total CNC --->  " + cncCalculation.getTotalCncPoints());
     }
 
     /**
