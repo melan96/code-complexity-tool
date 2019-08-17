@@ -11,7 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-public class ci_calc implements paper11, paper22 {
+public class ci_calc {
 
     public static String getStringBetweenTwoChars(String input, String startChar, String endChar) {
         try {
@@ -87,7 +87,7 @@ public class ci_calc implements paper11, paper22 {
         
         for(ProgramStatement ps : resultSet){
             ps.setCiValue(ci);
-            System.out.println("CI value:"+ps.getCiValue());
+            //System.out.println("CI value:"+ps.getCiValue());
         }
         return ci;
     }
@@ -123,9 +123,9 @@ public class ci_calc implements paper11, paper22 {
         int total = count - count1;
         if (total != 0) //Check for count not equal to zero
         {
-            System.out.println("Line count" + total);
+            //System.out.println("Line count" + total);
         } else {
-            System.out.println("No lines");
+            //System.out.println("No lines");
         }
 
         fr.close();
