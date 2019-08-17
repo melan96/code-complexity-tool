@@ -32,7 +32,7 @@ import javax.swing.JOptionPane;
 public class Analysis extends javax.swing.JFrame {
 
     private Dimension dimension = null;
-    private static String filePath = null;
+    public static String filePath = null;
     
     public static ArrayList<ProgramStatement> resultSet = null;
 
@@ -92,7 +92,7 @@ public class Analysis extends javax.swing.JFrame {
 
     final public void displayFile() {
 		
-		calculateCnCValues(resultSet);
+		//calculateCnCValues(resultSet);
         calculateCIValue();
 
         for(ProgramStatement ps : resultSet) { 		      
