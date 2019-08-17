@@ -31,7 +31,7 @@ public class Analysis extends javax.swing.JFrame {
     
     private Dimension dimension = null;
     private static String filePath = null;
-    private ArrayList<ProgramStatement> resultSet = null;   
+    public static ArrayList<ProgramStatement> resultSet = null;   
 
     /**
      * Creates new form MainUI
