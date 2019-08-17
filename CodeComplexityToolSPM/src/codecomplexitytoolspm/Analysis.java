@@ -5,6 +5,10 @@
  */
 package codecomplexitytoolspm;
 
+import TWCalculations.TWCalculator;
+import cnC_calculation.CncCalculation;
+import cs_calculation.cs_calculation;
+import ctc_calculation.CtcCalculation;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
@@ -28,75 +32,130 @@ import javax.swing.JOptionPane;
  * @author melan
  */
 public class Analysis extends javax.swing.JFrame {
-    
+
     private Dimension dimension = null;
-    private static String filePath = null;
-    private ArrayList<ProgramStatement> resultSet = null;   
+    public static String filePath = null;
+
+    public static ArrayList<ProgramStatement> resultSet = null;
+
+    //Calculation Classes
+    private CncCalculation cncCalculation = null;
 
     /**
      * Creates new form MainUI
      */
     public Analysis(String FilePath) {
         initComponents();
-        
+
         dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dimension.width/2-this.getSize().width/2, dimension.height/2-this.getSize().height/2);
+        this.setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
         this.filePath = FilePath;
-        
+
         readFile();
-        
+
         displayFile();
-        
-        
+
+        calculateCnCValues();
+
     }
-    
-    final public void readFile(){
-        
+
+    final public ArrayList<ProgramStatement> readFile() {
+
         resultSet = new ArrayList<ProgramStatement>();
 
         try {
-            
+
             final File file1 = new File(filePath);
-            final FileReader fileReader = new FileReader(file1); 
+            final FileReader fileReader = new FileReader(file1);
             final BufferedReader bufferReader = new BufferedReader(fileReader); //Creation of BufferedReader object
             String line;
             int count = 1;   //Intialize the word to zero
-            
-         
-             
-            while((line = bufferReader.readLine()) != null) //Reading Content from the file
+
+            while ((line = bufferReader.readLine()) != null) //Reading Content from the file
             {
                 ProgramStatement ps = new ProgramStatement();
                 ps.setLineNumber(count);
                 ps.setLineContent(line);
-                
+
                 resultSet.add(ps);
-                
+
                 count++;
-                
-            }  
-            
+
+            }
+
             fileReader.close();
-     
-            
-        }
-        catch (IOException ex) {
+
+        } catch (IOException ex) {
             Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
+        return resultSet;
     }
-    
-    final public void displayFile(){
-        
-        for (ProgramStatement ps : resultSet) { 		      
-           
+
+    final public void displayFile() {
+        try {
+            calculateCnCValues();
+            calculateCIValue();
+            calculateCtcValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            calculateTWValue();
+        }
+        for (ProgramStatement ps : resultSet) {
+
             currentCodeTextArea.append(String.valueOf(ps.getLineNumber()));
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(ps.getLineContent());
+            currentCodeTextArea.append("\t");
+            currentCodeTextArea.append(String.valueOf(ps.getCncValue()));
+            currentCodeTextArea.append("\t");
+            currentCodeTextArea.append(String.valueOf(ps.getCtcValue()));
+            currentCodeTextArea.append("\t");
+            currentCodeTextArea.append(String.valueOf(ps.getCsValue()));
+            currentCodeTextArea.append("\t");
+             currentCodeTextArea.append(String.valueOf(ps.getCiValue()));
+            currentCodeTextArea.append("\t");
+            currentCodeTextArea.append(String.valueOf(ps.getTwValue()));
             currentCodeTextArea.append("\n");
+
         }
-        
+
+    }
+
+    public void calculateCnCValues() {
+
+        //Const init 
+        cncCalculation = new CncCalculation();
+
+        ArrayList<Integer> Cnc_units = cncCalculation.coreBracketMapper();
+
+        for (int i = 0; i < Cnc_units.size(); i++) {
+            System.out.println("\t" + (i + 1) + " Line has " + Cnc_units.get(i) + " Cnc");
+        }
+
+        System.out.println("Total CNC --->  " + cncCalculation.getTotalCncPoints());
+    }
+
+    public void calculateCIValue() {
+        try {
+            ci_calculation.ci_calc.calc_ci();
+        } catch (IOException ex) {
+            Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void calculateCtcValue() {
+
+        CtcCalculation ctcCalc = new CtcCalculation();
+        ctcCalc.calculateCtc();
+
+    }
+
+    public void calculateTWValue() {
+        TWCalculator twCalc = new TWCalculator();
+        twCalc.calculateTWforProgramStatement();
+
     }
 
     /**
@@ -112,6 +171,9 @@ public class Analysis extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         currentCodeTextArea = new javax.swing.JTextArea();
+        calcCtcButton = new javax.swing.JButton();
+        updateButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 720));
@@ -128,14 +190,41 @@ public class Analysis extends javax.swing.JFrame {
         currentCodeTextArea.setRows(5);
         jScrollPane1.setViewportView(currentCodeTextArea);
 
+        calcCtcButton.setText("Calc Ctc");
+        calcCtcButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calcCtcButtonActionPerformed(evt);
+            }
+        });
+
+        updateButton.setText("Update");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPannelMainLayout = new javax.swing.GroupLayout(JPannelMain);
         JPannelMain.setLayout(JPannelMainLayout);
         JPannelMainLayout.setHorizontalGroup(
             JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPannelMainLayout.createSequentialGroup()
-                .addGap(357, 357, 357)
+                .addGap(40, 40, 40)
+                .addComponent(calcCtcButton)
+                .addGap(27, 27, 27)
+                .addComponent(updateButton)
+                .addGap(33, 33, 33)
+                .addComponent(jButton1)
+                .addGap(38, 38, 38)
                 .addComponent(jLabel1)
-                .addContainerGap(365, Short.MAX_VALUE))
+                .addContainerGap(373, Short.MAX_VALUE))
             .addGroup(JPannelMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
@@ -144,8 +233,16 @@ public class Analysis extends javax.swing.JFrame {
         JPannelMainLayout.setVerticalGroup(
             JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPannelMainLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JPannelMainLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1))
+                    .addGroup(JPannelMainLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(calcCtcButton)
+                            .addComponent(updateButton)
+                            .addComponent(jButton1))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
                 .addContainerGap())
@@ -164,6 +261,24 @@ public class Analysis extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void calcCtcButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcCtcButtonActionPerformed
+
+        System.out.println("Button Clicked");
+        CtcCalculation ctcCalculation = new CtcCalculation();
+        ctcCalculation.calculateCtc();
+
+    }//GEN-LAST:event_calcCtcButtonActionPerformed
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+        currentCodeTextArea.setText(null);
+        displayFile();
+    }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        cs_calculation cs = new cs_calculation();
+        cs.csCalculate();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,8 +318,11 @@ public class Analysis extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPannelMain;
+    private javax.swing.JButton calcCtcButton;
     private javax.swing.JTextArea currentCodeTextArea;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }
