@@ -95,6 +95,7 @@ public class Analysis extends javax.swing.JFrame {
 
         calculateCnCValues();
         calculateCIValue();
+        calculateCtcValue();
 
         for (ProgramStatement ps : resultSet) {
 
@@ -104,7 +105,6 @@ public class Analysis extends javax.swing.JFrame {
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(String.valueOf(ps.getCncValue()));
             currentCodeTextArea.append("\t");
-           
             currentCodeTextArea.append(String.valueOf(ps.getCtcValue()));
             currentCodeTextArea.append("\t");
           currentCodeTextArea.append(String.valueOf(ps.getCsValue()));
@@ -134,6 +134,13 @@ public class Analysis extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void calculateCtcValue(){
+    
+        CtcCalculation ctcCalc = new CtcCalculation();
+        ctcCalc.calculateCtc();
+        
     }
 
     /**
