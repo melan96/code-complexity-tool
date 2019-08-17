@@ -121,13 +121,4 @@ public class ci_calc implements paper11, paper22 {
 
         fr.close();
     }
-
-   
-
-    public static void main(String[] args) throws IOException {
-
-        calc_ci();
-        calc_line();
-        
-    }
 }
