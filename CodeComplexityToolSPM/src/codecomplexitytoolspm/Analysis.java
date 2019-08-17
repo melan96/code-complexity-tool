@@ -52,6 +52,8 @@ public class Analysis extends javax.swing.JFrame {
         readFile();
 
         displayFile();
+        
+        calculateCnCValues();
 
     }
 
@@ -97,8 +99,8 @@ public class Analysis extends javax.swing.JFrame {
             currentCodeTextArea.append(ps.getLineContent());
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(String.valueOf(ps.getCncValue()));
-            currentCodeTextArea.append("\t");
-            currentCodeTextArea.append(String.valueOf(ps.getCtcValue()));
+            //currentCodeTextArea.append("\t");
+            //currentCodeTextArea.append(String.valueOf(ps.getCtcValue()));
             currentCodeTextArea.append("\n");
 
         }
@@ -107,7 +109,7 @@ public class Analysis extends javax.swing.JFrame {
 
     }
 
-    public void calculateCnCValues(ArrayList<ProgramStatement> resultSet) {
+    public void calculateCnCValues() {
 
         //Const init 
         cncCalculation = new CncCalculation();
