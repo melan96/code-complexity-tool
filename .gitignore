@@ -24,3 +24,4 @@ hs_err_pid*
 /CodeComplexityToolSPM/nbproject/private/*
 /CodeComplexityToolSPM/build/*
 /CodeComplexityToolSPM/build/built-jar.properties
+/CodeComplexityToolSPM/dist/
