@@ -6,6 +6,7 @@
 package codecomplexitytoolspm;
 
 import cnC_calculation.CncCalculation;
+import cs_calculation.cs_calculation;
 import ctc_calculation.CtcCalculation;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -98,9 +99,11 @@ public class Analysis extends javax.swing.JFrame {
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(ps.getLineContent());
             currentCodeTextArea.append("\t");
-            currentCodeTextArea.append(String.valueOf(ps.getCncValue()));
-            currentCodeTextArea.append("\t");
-            currentCodeTextArea.append(String.valueOf(ps.getCtcValue()));
+            //currentCodeTextArea.append(String.valueOf(ps.getCncValue()));
+            //currentCodeTextArea.append("\t");
+            //currentCodeTextArea.append(String.valueOf(ps.getCtcValue()));
+            //currentCodeTextArea.append("\n");
+            currentCodeTextArea.append(String.valueOf(ps.getCsValue()));
             currentCodeTextArea.append("\n");
 
         }
@@ -138,6 +141,7 @@ public class Analysis extends javax.swing.JFrame {
         currentCodeTextArea = new javax.swing.JTextArea();
         calcCtcButton = new javax.swing.JButton();
         updateButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 720));
@@ -168,6 +172,13 @@ public class Analysis extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPannelMainLayout = new javax.swing.GroupLayout(JPannelMain);
         JPannelMain.setLayout(JPannelMainLayout);
         JPannelMainLayout.setHorizontalGroup(
@@ -177,7 +188,9 @@ public class Analysis extends javax.swing.JFrame {
                 .addComponent(calcCtcButton)
                 .addGap(27, 27, 27)
                 .addComponent(updateButton)
-                .addGap(144, 144, 144)
+                .addGap(33, 33, 33)
+                .addComponent(jButton1)
+                .addGap(38, 38, 38)
                 .addComponent(jLabel1)
                 .addContainerGap(373, Short.MAX_VALUE))
             .addGroup(JPannelMainLayout.createSequentialGroup()
@@ -196,7 +209,8 @@ public class Analysis extends javax.swing.JFrame {
                         .addGap(21, 21, 21)
                         .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(calcCtcButton)
-                            .addComponent(updateButton))))
+                            .addComponent(updateButton)
+                            .addComponent(jButton1))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
                 .addContainerGap())
@@ -228,6 +242,11 @@ public class Analysis extends javax.swing.JFrame {
         currentCodeTextArea.setText(null);
         displayFile();
     }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        cs_calculation cs = new cs_calculation();
+        cs.csCalculate();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -269,6 +288,7 @@ public class Analysis extends javax.swing.JFrame {
     private javax.swing.JPanel JPannelMain;
     private javax.swing.JButton calcCtcButton;
     private javax.swing.JTextArea currentCodeTextArea;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton updateButton;
