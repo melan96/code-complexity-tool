@@ -91,6 +91,9 @@ public class Analysis extends javax.swing.JFrame {
     }
 
     final public void displayFile() {
+		
+		calculateCnCValues(resultSet);
+        calculateCIValue();
 
         for(ProgramStatement ps : resultSet) { 		      
            
@@ -122,6 +125,13 @@ public class Analysis extends javax.swing.JFrame {
 
         System.out.println("Total CNC --->  " + cncCalculation.getTotalCncPoints());
     }
+	public void calculateCIValue(){
+        try {
+            ci_calculation.ci_calc.calc_ci();
+        } catch (IOException ex) {
+            Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
+        }
+	}
 
     /**
      * This method is called from within the constructor to initialize the form.
