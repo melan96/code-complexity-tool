@@ -34,7 +34,7 @@ public class Analysis extends javax.swing.JFrame {
 
     private Dimension dimension = null;
     public static String filePath = null;
-    
+
     public static ArrayList<ProgramStatement> resultSet = null;
 
     //Calculation Classes
@@ -53,7 +53,7 @@ public class Analysis extends javax.swing.JFrame {
         readFile();
 
         displayFile();
-        
+
         calculateCnCValues();
 
     }
@@ -70,7 +70,7 @@ public class Analysis extends javax.swing.JFrame {
             String line;
             int count = 1;   //Intialize the word to zero
 
-            while((line = bufferReader.readLine()) != null) //Reading Content from the file
+            while ((line = bufferReader.readLine()) != null) //Reading Content from the file
             {
                 ProgramStatement ps = new ProgramStatement();
                 ps.setLineNumber(count);
@@ -92,26 +92,25 @@ public class Analysis extends javax.swing.JFrame {
     }
 
     final public void displayFile() {
-		
-		//calculateCnCValues(resultSet);
+
+        calculateCnCValues();
         calculateCIValue();
 
-        for(ProgramStatement ps : resultSet) { 		      
-           
+        for (ProgramStatement ps : resultSet) {
+
             currentCodeTextArea.append(String.valueOf(ps.getLineNumber()));
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(ps.getLineContent());
             currentCodeTextArea.append("\t");
-            //currentCodeTextArea.append(String.valueOf(ps.getCncValue()));
-            //currentCodeTextArea.append("\t");
+            currentCodeTextArea.append(String.valueOf(ps.getCncValue()));
+            currentCodeTextArea.append("\t");
+            currentCodeTextArea.append("\n");
             //currentCodeTextArea.append(String.valueOf(ps.getCtcValue()));
             //currentCodeTextArea.append("\n");
-            currentCodeTextArea.append(String.valueOf(ps.getCsValue()));
-            currentCodeTextArea.append("\n");
+//            currentCodeTextArea.append(String.valueOf(ps.getCsValue()));
+//            currentCodeTextArea.append("\n");
 
         }
-
-        
 
     }
 
@@ -128,13 +127,14 @@ public class Analysis extends javax.swing.JFrame {
 
         System.out.println("Total CNC --->  " + cncCalculation.getTotalCncPoints());
     }
-	public void calculateCIValue(){
+
+    public void calculateCIValue() {
         try {
             ci_calculation.ci_calc.calc_ci();
         } catch (IOException ex) {
             Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
         }
-	}
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -241,11 +241,11 @@ public class Analysis extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void calcCtcButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcCtcButtonActionPerformed
-        
+
         System.out.println("Button Clicked");
         CtcCalculation ctcCalculation = new CtcCalculation();
         ctcCalculation.calculateCtc();
-        
+
     }//GEN-LAST:event_calcCtcButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
