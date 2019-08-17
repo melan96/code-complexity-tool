@@ -114,6 +114,8 @@ public class Analysis extends javax.swing.JFrame {
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(String.valueOf(ps.getCsValue()));
             currentCodeTextArea.append("\t");
+             currentCodeTextArea.append(String.valueOf(ps.getCiValue()));
+            currentCodeTextArea.append("\t");
             currentCodeTextArea.append(String.valueOf(ps.getTwValue()));
             currentCodeTextArea.append("\n");
 
