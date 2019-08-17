@@ -5,6 +5,7 @@
  */
 package codecomplexitytoolspm;
 
+import TWCalculations.TWCalculator;
 import cnC_calculation.CncCalculation;
 import cs_calculation.cs_calculation;
 import ctc_calculation.CtcCalculation;
@@ -92,11 +93,15 @@ public class Analysis extends javax.swing.JFrame {
     }
 
     final public void displayFile() {
-
-        calculateCnCValues();
-        calculateCIValue();
-        calculateCtcValue();
-
+        try {
+            calculateCnCValues();
+            calculateCIValue();
+            calculateCtcValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            calculateTWValue();
+        }
         for (ProgramStatement ps : resultSet) {
 
             currentCodeTextArea.append(String.valueOf(ps.getLineNumber()));
@@ -107,8 +112,10 @@ public class Analysis extends javax.swing.JFrame {
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(String.valueOf(ps.getCtcValue()));
             currentCodeTextArea.append("\t");
-          currentCodeTextArea.append(String.valueOf(ps.getCsValue()));
-           currentCodeTextArea.append("\n");
+            currentCodeTextArea.append(String.valueOf(ps.getCsValue()));
+            currentCodeTextArea.append("\t");
+            currentCodeTextArea.append(String.valueOf(ps.getTwValue()));
+            currentCodeTextArea.append("\n");
 
         }
 
@@ -135,12 +142,18 @@ public class Analysis extends javax.swing.JFrame {
             Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void calculateCtcValue(){
-    
+
+    public void calculateCtcValue() {
+
         CtcCalculation ctcCalc = new CtcCalculation();
         ctcCalc.calculateCtc();
-        
+
+    }
+
+    public void calculateTWValue() {
+        TWCalculator twCalc = new TWCalculator();
+        twCalc.calculateTWforProgramStatement();
+
     }
 
     /**
