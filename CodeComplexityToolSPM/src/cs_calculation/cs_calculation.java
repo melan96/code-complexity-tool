@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class cs_calculation {
     
     private final String REGEX_TWO = "new|delete|throw|throws|&[^&]|\\*";
-    private final String REGEX_ARITHMETIC = "\\+[^\\+]|-[^-]| \\*|/|%|\\+\\+|--";
+    private final String REGEX_ARITHMETIC = "\\+[^\\+]|-[^-]| \\*|/[^/]|%|\\+\\+|--";
     private final String REGEX_RELATION = "==|!=|>|<|>=|<=";
     private final String REGEX_LOGICAL = "&&|\\|\\||!";
     private final String REGEX_BITWISE = "\\|[^\\|]|\\^|~|<<|>>|<<<|>>>";
