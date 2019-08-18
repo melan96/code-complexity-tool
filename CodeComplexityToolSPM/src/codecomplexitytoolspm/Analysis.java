@@ -27,7 +27,13 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;
 
+import java.io.FileOutputStream;
+import export_pdf.*;
 /**
  *
  * @author melan
@@ -221,7 +227,12 @@ public class Analysis extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton2.setText("jToggleButton2");
+        jToggleButton2.setText("Export PDF");
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPannelMainLayout = new javax.swing.GroupLayout(JPannelMain);
         JPannelMain.setLayout(JPannelMainLayout);
@@ -240,7 +251,7 @@ public class Analysis extends javax.swing.JFrame {
                 .addComponent(jToggleButton2)
                 .addGap(30, 30, 30)
                 .addComponent(jToggleButton1)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
             .addGroup(JPannelMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
@@ -307,6 +318,45 @@ public class Analysis extends javax.swing.JFrame {
             Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        // TODO add your handling code here:
+         //PDf Handling Code - @melan96
+        
+        
+             String TITLE = "TestReport";
+             String PDF_EXTENSION = ".pdf";
+             
+             
+              ArrayList<ProgramStatement> dataObjList = resultSet;
+              
+              Document document = null;
+        try {
+        //Document is not auto-closable hence need to close it separately
+            document = new Document(PageSize.A4);            
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(
+                    new File(TITLE + PDF_EXTENSION)));
+            HeaderFooter event = new HeaderFooter();
+            event.setHeader("Test Report");
+            writer.setPageEvent(event);
+            document.open();
+            PDFCreator.addMetaData(document, TITLE);
+            PDFCreator.addTitlePage(document, TITLE);
+            PDFCreator.addContent(document, dataObjList);
+            
+        }catch (DocumentException e) {
+            e.printStackTrace();
+            System.out.println("FileNotFoundException occurs.." + e.getMessage());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(null != document){
+                document.close();
+            }
+        }
+              
+        
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     /**
      * @param args the command line arguments
