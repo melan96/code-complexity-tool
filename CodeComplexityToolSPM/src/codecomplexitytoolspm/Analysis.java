@@ -324,7 +324,7 @@ public class Analysis extends javax.swing.JFrame {
          //PDf Handling Code - @melan96
         
         
-             String TITLE = "TestReport";
+             String TITLE = "TestReport"+new Date().toString();
              String PDF_EXTENSION = ".pdf";
              
              
