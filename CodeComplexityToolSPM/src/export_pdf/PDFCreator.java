@@ -29,13 +29,13 @@ import java.util.ArrayList;
  * This is to create a PDF file.
  */
 public class PDFCreator {
-    private final static String[] HEADER_ARRAY = {"Line Number", "Program Statement", "CnC Value", "Year"};
+    private final static String[] HEADER_ARRAY = {"Line Number", "Program Statement", "Cs Value","CtC Value", "CnC Value", "Ci Value","TW Value","Cps Value","Cr Value"};
     public final static Font SMALL_BOLD = new Font(Font.FontFamily.TIMES_ROMAN, 8,
             Font.BOLD);
     public final static Font NORMAL_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 8,
             Font.NORMAL);
     public static void addMetaData(Document document, String sqlXMLFileName) {
-        document.addTitle("Sample Report");
+        document.addTitle("PDF Report");
         document.addSubject("Code Complexity");
         document.addAuthor("Melan Rashitha");
     }
