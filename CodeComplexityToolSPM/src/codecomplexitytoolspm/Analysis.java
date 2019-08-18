@@ -43,6 +43,7 @@ public class Analysis extends javax.swing.JFrame {
 
     private Dimension dimension = null;
     public static String filePath = null;
+    private static String copyText = null;
 
     public static ArrayList<ProgramStatement> resultSet = null;
 
@@ -50,21 +51,33 @@ public class Analysis extends javax.swing.JFrame {
     /**
      * Creates new form MainUI
      */
-    public Analysis(String FilePath) {
+    public Analysis(String FilePath, String copyText) {
         initComponents();
 
         dimension = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
-        this.filePath = FilePath;
-
-        readFile();
+        
+        if(FilePath == null && copyText != null){
+            this.copyText = copyText;
+            readFromText();
+        }
+        else if(FilePath != null && copyText == null){
+            this.filePath = FilePath;
+            readFromFile();
+        }
+        
+  
 
         displayFile();
         
 
     }
+    
+    final public void readFromText(){
+        System.out.println("Reading from text");
+    }
 
-    final public void readFile() {
+    final public void readFromFile() {
 
         resultSet = new ArrayList<ProgramStatement>();
 
@@ -363,7 +376,7 @@ public class Analysis extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Analysis(filePath).setVisible(true);
+                new Analysis(filePath, copyText).setVisible(true);
             }
         });
     }

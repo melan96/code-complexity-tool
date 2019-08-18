@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 public class MainUI extends javax.swing.JFrame {
     
     private Dimension dimension = null;
+    public static ButtonGroup g = new ButtonGroup();
 
     /**
      * Creates new form MainUI
@@ -31,12 +32,12 @@ public class MainUI extends javax.swing.JFrame {
         
         dimension = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dimension.width/2-this.getSize().width/2, dimension.height/2-this.getSize().height/2);
-        
-        ButtonGroup g = new ButtonGroup();
+       
         g.add(fileradiobutton);
         g.add(textradiobutton);
         
-        
+        fileradiobutton.setSelected(true);
+ 
     }
 
     /**
@@ -224,14 +225,25 @@ public class MainUI extends javax.swing.JFrame {
                 newDialog.setVisible(true); 
             }
             else{
-                final Analysis analysis = new Analysis(filePath);
+                final Analysis analysis = new Analysis(filePath, null);
                 this.enable(false);
                 analysis.setVisible(true);
             }
         }
         else if(textradiobutton.isSelected()){
             
-            
+            if(codetextarea.getText().isEmpty()){
+                
+                JOptionPane newOptionPane = new JOptionPane("Please add the code to be imported", JOptionPane.ERROR_MESSAGE);
+                final JDialog newDialog = newOptionPane.createDialog("Warning");
+                newDialog.setAlwaysOnTop(true);
+                newDialog.setVisible(true);
+            }
+            else{
+                final Analysis analysis = new Analysis(null, codetextarea.getText());
+                this.enable(false);
+                analysis.setVisible(true);
+            }
         }
         
     }//GEN-LAST:event_importFileButtonActionPerformed
