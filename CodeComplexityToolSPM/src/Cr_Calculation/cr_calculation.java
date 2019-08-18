@@ -14,125 +14,99 @@ import java.util.regex.Pattern;
 /**
  *
  * @author pasindu
- */ /*
+ */ 
 public class cr_calculation {
     
-   final private String methodREGX = "(public|private|static|protected) ([A-Za-z]+) ([A-Za-z0-9]+)";
-    final private ArrayList<String> switchStatements = new ArrayList<String>();
+    final private String methodREGX = "\\b(public|private)\\s*\\w+\\s*\\w+\\s*\\w+\\(.*\\)";
+    final private String openBracketREGX = "\\{";
+    final private String closeBracketREGX = "\\}";
+    final private String methodName = "\\b\\w+\\(";
+    private boolean recursionDetected = false;
+    private int start = 0;
+    private int end = 0;
     private ArrayList<ProgramStatement> copyResultSet = new ArrayList<ProgramStatement>(Analysis.resultSet.size());   
-    private boolean switchFound = false;
-    private int bracketCounter = 0;
     
     public cr_calculation(){
         copyArrayList();
     } 
 
-    public void calculateCtc(){
+    public void calculateCr(){
 
-        Pattern ifPattern = Pattern.compile(ifREGX);
-        Pattern loopPattern = Pattern.compile(loopREGX);
-        Pattern lgOperatorsPattern = Pattern.compile(operatorREGX);
-        Pattern catchPattern = Pattern.compile(catchREGX);
-        Pattern switchPattern = Pattern.compile(switchREGX);
-        Pattern casePattern = Pattern.compile(caseREGX);
-        Pattern openBracketPattern = Pattern.compile(openBracketREGX);
-        Pattern closeBracketPattern = Pattern.compile(closeBracketREGX); 
+        Pattern methodPattern = Pattern.compile(methodREGX);
         
-
         for(int i=0; i < Analysis.resultSet.size(); i++){
             
-            int ctcValue = 0;
-            int logMatchCount = 0;
+            String currentLine = Analysis.resultSet.get(i).getLineContent();
 
-            final String currentLine = Analysis.resultSet.get(i).getLineContent();
-            System.out.println(currentLine);
-
-            Matcher ifStatementMatcher = ifPattern.matcher(currentLine);
-            Matcher logOperatorsMatcher = lgOperatorsPattern.matcher(currentLine);
-            Matcher loopMatcher = loopPattern.matcher(currentLine);
-            Matcher catchMatcher = catchPattern.matcher(currentLine);
-            Matcher switchMatcher = switchPattern.matcher(currentLine);
+            Matcher methodMatcher = methodPattern.matcher(currentLine);
             
+            if(methodMatcher.find()){
+                
+                //Get the method name
+                
+                start = i;
+                Pattern name = Pattern.compile(methodName);
+                Matcher methodNameMatcher = name.matcher(currentLine);
+                String methodName = null;
+                String newMethodName = null;
 
-            //Check if the statement contains a if statement
-            if(ifStatementMatcher.find()){
+                if(methodNameMatcher.find()){
 
-                System.out.println("If match found");
+                    methodName = methodNameMatcher.group();
 
-                while(logOperatorsMatcher.find()){
-                    logMatchCount++;
+                    int index = methodName.indexOf("(");
+                    newMethodName = methodName.substring(0, index);
+
                 }
-
-                System.out.println("Log match count: " + logMatchCount);
-                ctcValue = logMatchCount + 1;
                 
-                Analysis.resultSet.get(i).setCtcValue(ctcValue);
+                final String recursionREGX = "\\b" + newMethodName + "+\\(.+\\)";
+                Pattern recursion = Pattern.compile(recursionREGX);
                 
-            }
-            else if(loopMatcher.find()) { //Check if the statement contains a do | while | for loop
-
-                System.out.println("Loop match found");
-
-                while(logOperatorsMatcher.find()){
-                    logMatchCount++;
-                }
-
-                System.out.println("Log match count: " + logMatchCount);
-                ctcValue = ( logMatchCount + 1 ) * 2;
-                Analysis.resultSet.get(i).setCtcValue(ctcValue);
-            }
-            else if(catchMatcher.find()){
-                
-                ctcValue = 1;
-                Analysis.resultSet.get(i).setCtcValue(ctcValue);
-            }
-            else if(switchMatcher.find()){
-                
-                System.out.println("Switch detected");
-                
-                int bracketCounter = 0;
-                int caseCounter = 0;
-                ArrayList<Integer> ps = new ArrayList<Integer>();
-                
-                ps.add(i);
+                int bracketCounter = 0;                
                 
                 for(int k=i; k < copyResultSet.size(); k++){
+                   
+                    String newCurrentLine = copyResultSet.get(k).getLineContent();
+                    Matcher recursionMatcher = recursion.matcher(newCurrentLine);
                     
-                    String currentLine1 = copyResultSet.get(k).getLineContent();
-                    System.out.println("Line " + k + "- " + currentLine1);
+                    Pattern openBracket = Pattern.compile(openBracketREGX);
+                    Pattern closeBracket = Pattern.compile(closeBracketREGX);
                     
-                    Matcher caseMatcher = casePattern.matcher(currentLine1);
-                    Matcher openBracketMatcher = openBracketPattern.matcher(currentLine1);
-                    Matcher closeBracketMatcher = closeBracketPattern.matcher(currentLine1);
+                    Matcher openBracketMatcher = openBracket.matcher(newCurrentLine);
+                    Matcher closeBracketMatcher = closeBracket.matcher(newCurrentLine);
+                    
                     
                     if(openBracketMatcher.find()){
+                        System.out.println("Increasing bc");
                         bracketCounter++;
                     }
                     
-                    if(closeBracketMatcher.find() && bracketCounter > 1){
+                    if(closeBracketMatcher.find()){
+                        
+                        System.out.println("Decreasing bc");
                         bracketCounter--;
                     }
                     
-                    if(caseMatcher.find()){
-                        caseCounter++;
-                        ps.add(k);
-                    }
-                    
-                    if(closeBracketMatcher.find() && bracketCounter == 1){
+                  
+                    if(bracketCounter == 0){
+                        end = k;
                         break;
                     }
                     
+                    
+                    if(recursionMatcher.find() && k!=i){
+                        System.out.println("Recursion Detected");
+                        recursionDetected = true;
+                    }
                 }
                 
-                for(int j=0; j < ps.size(); j++){
-                    
-                    Analysis.resultSet.get(ps.get(j)).setCtcValue(caseCounter);
-                }
-                 
+                
+                updateCrValue();
+                recursionDetected=false;
+                
+                
             }
-            
-            
-            System.out.println("CTC VALUE: " + ctcValue);
+      
         }
     }
     
@@ -144,4 +118,18 @@ public class cr_calculation {
         }
     } 
     
-} */
+    
+    public void updateCrValue(){
+        
+        //Get the cpc values
+        int cpc = Analysis.resultSet.get(3).getCpsValue();
+        
+        if(recursionDetected==true){
+            for(int i=start; i <= end; i++){
+            
+                Analysis.resultSet.get(i).setCrValue(15);
+            
+            }
+        }
+    } 
+} 

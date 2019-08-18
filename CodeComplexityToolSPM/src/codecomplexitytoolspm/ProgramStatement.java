@@ -20,6 +20,7 @@ public class ProgramStatement {
     private int twValue;
     private int cpsValue;
     private int crValue;
+    private int cpValue;
 
     public int getLineNumber() {
         return lineNumber;
@@ -56,6 +57,10 @@ public class ProgramStatement {
     public int getCrValue() {
         return crValue;
     }
+    
+    public int getCpValue(){
+        return cpValue;
+    }
 
     public void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
@@ -87,6 +92,10 @@ public class ProgramStatement {
 
     public void setCpsValue(int cpsValue) {
         this.cpsValue = cpsValue;
+    }
+    
+    public void setCpValue(int cpValue){
+        this.cpValue=cpValue;
     }
 
     public void setCrValue(int crValue) {

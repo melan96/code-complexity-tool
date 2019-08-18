@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class cs_calculation {
     
     private final String REGEX_TWO = "new|delete|throw|throws|&[^&]|\\*";
-    private final String REGEX_ARITHMETIC = "\\+[^\\+]|-[^-]| \\*|/|%|\\+\\+|--";
+    private final String REGEX_ARITHMETIC = "\\+[^\\+]|-[^-]| \\*|/[^/]|%|\\+\\+|--";
     private final String REGEX_RELATION = "==|!=|>|<|>=|<=";
     private final String REGEX_LOGICAL = "&&|\\|\\||!";
     private final String REGEX_BITWISE = "\\|[^\\|]|\\^|~|<<|>>|<<<|>>>";
@@ -70,6 +70,40 @@ public class cs_calculation {
             
         }
         
+        
+    }
+    
+    public int CsCalculateChunk(String codeStatement){
+        
+       
+            
+            int csValue = 0;
+            
+            String currentLine = codeStatement;
+            
+            final Matcher matcher = pattern.matcher(codeStatement);
+            final Matcher removeMatcher = removePattern.matcher(codeStatement);
+            final Matcher doubleMatcher = doublePattern.matcher(codeStatement);
+            
+            while(matcher.find()){
+                csValue++;
+            }
+            
+            while(removeMatcher.find()){
+                csValue--;
+            }
+            
+            while(doubleMatcher.find()){
+                
+                csValue =+ 2;
+            }
+            
+            
+            System.out.println("[TEST] CS Value: " + csValue);
+            
+            return csValue;
+            
+            
         
     }
     
