@@ -73,4 +73,38 @@ public class cs_calculation {
         
     }
     
+    public int CsCalculateChunk(String codeStatement){
+        
+       
+            
+            int csValue = 0;
+            
+            String currentLine = codeStatement;
+            
+            final Matcher matcher = pattern.matcher(codeStatement);
+            final Matcher removeMatcher = removePattern.matcher(codeStatement);
+            final Matcher doubleMatcher = doublePattern.matcher(codeStatement);
+            
+            while(matcher.find()){
+                csValue++;
+            }
+            
+            while(removeMatcher.find()){
+                csValue--;
+            }
+            
+            while(doubleMatcher.find()){
+                
+                csValue =+ 2;
+            }
+            
+            
+            System.out.println("[TEST] CS Value: " + csValue);
+            
+            return csValue;
+            
+            
+        
+    }
+    
 }
