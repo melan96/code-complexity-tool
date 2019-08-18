@@ -60,7 +60,13 @@ public class PDFCreator {
             addToTable(table, String.valueOf(count)+".");
             addToTable(table, String.valueOf(dataObject.getLineNumber()));
             addToTable(table, dataObject.getLineContent());
+            addToTable(table, String.valueOf(dataObject.getCsValue()));
+            addToTable(table, String.valueOf(dataObject.getCtcValue()));
             addToTable(table, String.valueOf(dataObject.getCncValue()));
+            addToTable(table, String.valueOf(dataObject.getCiValue()));
+            addToTable(table, String.valueOf(dataObject.getTwValue()));
+            addToTable(table, String.valueOf(dataObject.getCpsValue()));
+            addToTable(table, String.valueOf(dataObject.getCrValue()));
             count++;
         }
         paragraph.add(table);
