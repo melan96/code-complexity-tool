@@ -11,6 +11,7 @@ import cs_calculation.cs_calculation;
 import ctc_calculation.CtcCalculation;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.print.PrinterException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -174,6 +175,8 @@ public class Analysis extends javax.swing.JFrame {
         calcCtcButton = new javax.swing.JButton();
         updateButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 720));
@@ -211,6 +214,15 @@ public class Analysis extends javax.swing.JFrame {
             }
         });
 
+        jToggleButton1.setText("Print ");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
+        jToggleButton2.setText("jToggleButton2");
+
         javax.swing.GroupLayout JPannelMainLayout = new javax.swing.GroupLayout(JPannelMain);
         JPannelMain.setLayout(JPannelMainLayout);
         JPannelMainLayout.setHorizontalGroup(
@@ -224,7 +236,11 @@ public class Analysis extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1)
-                .addContainerGap(373, Short.MAX_VALUE))
+                .addGap(103, 103, 103)
+                .addComponent(jToggleButton2)
+                .addGap(30, 30, 30)
+                .addComponent(jToggleButton1)
+                .addContainerGap(37, Short.MAX_VALUE))
             .addGroup(JPannelMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
@@ -236,7 +252,10 @@ public class Analysis extends javax.swing.JFrame {
                 .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPannelMainLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1))
+                        .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jToggleButton1)
+                            .addComponent(jToggleButton2)))
                     .addGroup(JPannelMainLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -279,6 +298,15 @@ public class Analysis extends javax.swing.JFrame {
         cs_calculation cs = new cs_calculation();
         cs.csCalculate();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            currentCodeTextArea.print();
+        } catch (PrinterException ex) {
+            Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -323,6 +351,8 @@ public class Analysis extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }
