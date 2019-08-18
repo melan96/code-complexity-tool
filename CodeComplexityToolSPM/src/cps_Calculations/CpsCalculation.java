@@ -5,10 +5,24 @@
  */
 package cps_Calculations;
 
+import codecomplexitytoolspm.Analysis;
+import codecomplexitytoolspm.ProgramStatement;
+
 /**
  *
  * @author melan
  */
 public class CpsCalculation {
+    
+    
+    //Calculate CPs values 
+    //Cps = Tw * Cs
+    
+    public void calculateCpsValues(){
+   
+        for(ProgramStatement progs : Analysis.resultSet){
+            progs.setCpsValue(progs.getTwValue()*progs.getCsValue());
+        }
+    }
     
 }
