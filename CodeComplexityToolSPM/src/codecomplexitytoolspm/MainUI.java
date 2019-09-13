@@ -37,6 +37,8 @@ public class MainUI extends javax.swing.JFrame {
         g.add(textradiobutton);
         
         fileradiobutton.setSelected(true);
+        
+        codetextarea.enable(false);
  
     }
 
@@ -57,14 +59,13 @@ public class MainUI extends javax.swing.JFrame {
         importFileButton = new javax.swing.JButton();
         fileradiobutton = new javax.swing.JRadioButton();
         textradiobutton = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         codetextarea = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1280, 720));
+        setMaximumSize(null);
         setMinimumSize(new java.awt.Dimension(1280, 720));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
 
         JPannelMain.setBackground(new java.awt.Color(30, 31, 41));
@@ -72,7 +73,7 @@ public class MainUI extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("DejaVu Sans Light", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(241, 241, 241));
-        jLabel1.setText("Check Complexity ");
+        jLabel1.setText("Code Complexity Tool");
 
         setFilePathButton.setBackground(new java.awt.Color(119, 255, 94));
         setFilePathButton.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
@@ -101,6 +102,8 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
+        fileradiobutton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        fileradiobutton.setForeground(new java.awt.Color(255, 255, 255));
         fileradiobutton.setText("Import as a file");
         fileradiobutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,6 +111,8 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
+        textradiobutton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        textradiobutton.setForeground(new java.awt.Color(255, 255, 255));
         textradiobutton.setText("Imort as text");
         textradiobutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,61 +120,63 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         codetextarea.setColumns(20);
         codetextarea.setRows(5);
         jScrollPane1.setViewportView(codetextarea);
+
+        jLabel2.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Select Import Option");
 
         javax.swing.GroupLayout JPannelMainLayout = new javax.swing.GroupLayout(JPannelMain);
         JPannelMain.setLayout(JPannelMainLayout);
         JPannelMainLayout.setHorizontalGroup(
             JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JPannelMainLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPannelMainLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 919, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(JPannelMainLayout.createSequentialGroup()
-                        .addComponent(fileradiobutton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(textradiobutton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(72, 72, 72)
-                        .addComponent(jLabel1)
-                        .addGap(34, 34, 34)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPannelMainLayout.createSequentialGroup()
+                        .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(JPannelMainLayout.createSequentialGroup()
+                                .addComponent(filePathTextField)
+                                .addGap(18, 18, 18)
+                                .addComponent(setFilePathButton))
+                            .addComponent(jScrollPane1)
+                            .addGroup(JPannelMainLayout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(152, 152, 152)
+                                .addComponent(fileradiobutton, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36)
+                                .addComponent(textradiobutton, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(38, 38, 38))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPannelMainLayout.createSequentialGroup()
                         .addComponent(importFileButton)
-                        .addGap(35, 35, 35)
-                        .addComponent(jButton1))
-                    .addGroup(JPannelMainLayout.createSequentialGroup()
-                        .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(setFilePathButton)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addGap(312, 312, 312))))
+            .addGroup(JPannelMainLayout.createSequentialGroup()
+                .addGap(645, 645, 645)
+                .addComponent(jLabel1)
+                .addGap(0, 727, Short.MAX_VALUE))
         );
         JPannelMainLayout.setVerticalGroup(
             JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPannelMainLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(JPannelMainLayout.createSequentialGroup()
-                        .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1)
-                                .addComponent(importFileButton)
-                                .addComponent(jButton1))
-                            .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(fileradiobutton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textradiobutton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(34, 34, 34)
-                        .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(setFilePathButton))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(jLabel1)
+                .addGap(64, 64, 64)
+                .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fileradiobutton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(textradiobutton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(setFilePathButton)
+                    .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(83, 83, 83)
+                .addComponent(importFileButton)
+                .addContainerGap(228, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -256,15 +263,6 @@ public class MainUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fileradiobuttonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(fileradiobutton.isSelected()){
-            System.out.println("File");
-        }
-        else if(textradiobutton.isSelected()){
-            System.out.println("Text");
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -307,8 +305,8 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JTextField filePathTextField;
     private javax.swing.JRadioButton fileradiobutton;
     private javax.swing.JButton importFileButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton setFilePathButton;
     private javax.swing.JRadioButton textradiobutton;

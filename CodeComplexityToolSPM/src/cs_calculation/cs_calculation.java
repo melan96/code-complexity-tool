@@ -50,6 +50,7 @@ public class cs_calculation {
             final Matcher doubleMatcher = doublePattern.matcher(currentLine);
             
             while(matcher.find()){
+                
                 csValue++;
             }
             
