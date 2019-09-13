@@ -7,6 +7,8 @@ package codecomplexitytoolspm;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,6 +16,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 
 /**
  *
@@ -36,9 +39,40 @@ public class MainUI extends javax.swing.JFrame {
         g.add(fileradiobutton);
         g.add(textradiobutton);
         
+        codetextarea.setEnabled(false);                
+       
+        
+        //add allow listener
+        fileradiobutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                System.out.println("FILE READING");
+                codetextarea.setEnabled(false);
+                filePathTextField.setEnabled(true);
+                setFilePathButton.setEnabled(true);
+
+            }
+        });
+        
+        //add allow listener
+        textradiobutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                System.out.println("TEXT READING");
+                filePathTextField.setEnabled(false);
+                setFilePathButton.setEnabled(false);
+                codetextarea.setEnabled(true);
+
+            }
+        });
+        
+
+        
         fileradiobutton.setSelected(true);
         
-        codetextarea.enable(false);
+        //codetextarea.enable(false);
  
     }
 
@@ -163,7 +197,7 @@ public class MainUI extends javax.swing.JFrame {
             .addGroup(JPannelMainLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
-                .addGap(64, 64, 64)
+                .addGap(94, 94, 94)
                 .addGroup(JPannelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fileradiobutton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
@@ -176,7 +210,7 @@ public class MainUI extends javax.swing.JFrame {
                     .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(83, 83, 83)
                 .addComponent(importFileButton)
-                .addContainerGap(228, Short.MAX_VALUE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

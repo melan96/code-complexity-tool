@@ -5,6 +5,9 @@
  */
 package cp_calculation_without_recursion;
 
+import codecomplexitytoolspm.Analysis;
+import codecomplexitytoolspm.ProgramStatement;
+
 /**
  *
  * @author Udith
