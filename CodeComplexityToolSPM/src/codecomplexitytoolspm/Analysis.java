@@ -32,9 +32,13 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
+import database_management.DBConnection;
 
 import java.io.FileOutputStream;
 import export_pdf.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  *
  * @author melan
@@ -44,6 +48,9 @@ public class Analysis extends javax.swing.JFrame {
     private Dimension dimension = null;
     public static String filePath = null;
     private static String copyText = null;
+    private Connection connection = null;
+    private String fileName  = null;
+    private boolean fileUploadStatus = false;
 
     public static ArrayList<ProgramStatement> resultSet = null;
 
@@ -53,9 +60,21 @@ public class Analysis extends javax.swing.JFrame {
      */
     public Analysis(String FilePath, String copyText) {
         initComponents();
+        
+        
 
         dimension = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
+        
+        
+        try {
+            connection = (Connection) DBConnection.getConnection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
         
         if(FilePath == null && copyText != null){
             this.copyText = copyText;
@@ -84,6 +103,7 @@ public class Analysis extends javax.swing.JFrame {
         try {
 
             final File file1 = new File(filePath);
+            fileName = file1.getName();
             final FileReader fileReader = new FileReader(file1);
             final BufferedReader bufferReader = new BufferedReader(fileReader); //Creation of BufferedReader object
             String line;
@@ -112,14 +132,14 @@ public class Analysis extends javax.swing.JFrame {
 
     final public void displayFile() {
         
-        update();
+        calculateValues();
         
         for (ProgramStatement ps : resultSet) {
-            /*
+            
             currentCodeTextArea.append(String.valueOf(ps.getLineNumber()));
             currentCodeTextArea.append("\t");
             currentCodeTextArea.append(ps.getLineContent());
-            currentCodeTextArea.append("\t");
+            currentCodeTextArea.append("\t"); /*
             currentCodeTextArea.append(String.valueOf(ps.getCncValue())); */
             currentCodeTextArea.append("\t"); 
             currentCodeTextArea.append(String.valueOf(ps.getCtcValue())); 
@@ -134,7 +154,80 @@ public class Analysis extends javax.swing.JFrame {
             currentCodeTextArea.append("\n");
 
         }
+        
+        if(fileUploadStatus == false){
+            uploadFile();
+        }
+        
+        fileUploadStatus = true;
+        
+        
 
+    }
+    
+    final public void uploadFile(){
+        
+        int fileID = 0;
+        
+        try {
+            
+            String sqlStatement1 = "INSERT INTO files(file_name) VALUES(?)";
+            PreparedStatement ps1 = connection.prepareStatement(sqlStatement1);
+            
+            ps1.setString(1, fileName);
+            
+            ps1.executeUpdate();
+            
+            ps1.close();
+            
+            String sqlStatement2 = "SELECT * from files where file_name=?";
+            PreparedStatement ps2 = connection.prepareStatement(sqlStatement2);
+            
+            ps2.setString(1, fileName);
+            
+            final ResultSet rs1 = ps2.executeQuery();
+            
+            while(rs1.next()){
+                fileID = rs1.getInt("file_id");
+            }
+
+
+            ps2.close();
+            rs1.close();
+            
+            
+            
+            for (ProgramStatement ps : resultSet) {
+                
+                String sqlStatement3 = "INSERT INTO file_content(file_id, line_number, line_content, cs, ctc, cnc, ci, tw, cps, cr) values(?,?,?,?,?,?,?,?,?,?)";
+                PreparedStatement ps3 = connection.prepareStatement(sqlStatement3);
+                
+                ps3.setInt(1, fileID);
+                ps3.setInt(2, ps.getLineNumber());
+                ps3.setString(3, ps.getLineContent());
+                ps3.setInt(4, ps.getCsValue());
+                ps3.setInt(5, ps.getCtcValue());
+                ps3.setInt(6, ps.getCncValue());
+                ps3.setInt(7, ps.getCiValue());
+                ps3.setInt(8, ps.getTwValue());
+                ps3.setInt(9, ps.getCpsValue());
+                ps3.setInt(10, ps.getCrValue());
+                
+                ps3.executeUpdate();
+                ps3.close();
+                
+            }
+            
+            
+
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
+            final JOptionPane newOptionPane = new JOptionPane("Error encountered in file uploading process", JOptionPane.ERROR_MESSAGE);
+            final JDialog newDialog = newOptionPane.createDialog("Warning");
+            newDialog.setAlwaysOnTop(true);
+            newDialog.setVisible(true);
+        }
     }
 
     public void calculateCnCValues() {
@@ -182,7 +275,7 @@ public class Analysis extends javax.swing.JFrame {
         cr.calculateCr();
     }
     
-    public void update(){
+    public void calculateValues(){
         calculateCtcValue();
         calculateCnCValues();
         calculateCIValue();
