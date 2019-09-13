@@ -7,8 +7,21 @@ package cp_calculation_without_recursion;
 
 /**
  *
- * @author Romesh
+ * @author Udith
  */
 public class cp_calc_with_recursion {
+    public static int cpTotal=0;
+    public void calculateCpValues(){
+   
+        for(ProgramStatement progs : Analysis.resultSet){
+            if(progs.getCrValue()==0){
+                progs.setCpValue(progs.getCpsValue());
+            }
+            else{
+                progs.setCpValue(progs.getCpsValue()*progs.getCrValue());
+            }
+            cpTotal=cpTotal+progs.getCpValue();
+        }
+    }
     
 }
