@@ -30,7 +30,10 @@ public class ci_calc {
 
     public static int calc_ci() throws IOException {
         File f1 = new File(Analysis.filePath); //Creation of File Descriptor for input file
-        
+        String rgex1="(public|private|internal|protected)\\s[c]lass\\s([^\\s]+)\\s:";
+        String rgex2="(public|private|internal|protected)";
+        Pattern p = Pattern.compile(rgex1);
+        Pattern p1 = Pattern.compile(rgex2);
         String[] words = null;
         String[] words1 = null;//Intialize the word Array
         
@@ -46,29 +49,50 @@ public class ci_calc {
         
         int count = 0;   //Intialize the word to zero
         int ci=0;
+        int cvalue=0;
         
+            
         while ((s = br.readLine()) != null) //Reading Content from the file
         {
-            words = s.split(" ");  //Split the word using space
-            //String output = getStringBetweenTwoChars(s,start_char,end_char);
-            ///words = output.split(" ");
-            for (String word : words) {
-                if (word.equals(input)) //Search for the given word
-                {
-                    String output = getStringBetweenTwoChars(s, start_char, end_char);
-                    words1 = output.split(" ");
+            Matcher m = p.matcher(s);
+            
+            
+            if(m.find()){
+                String output = getStringBetweenTwoChars(s, ": ", "{");
+                words1 = output.split(" ");
+                count++;
                     for (String word1 : words1) {
-                        count++;    //If Present increase the count by one                 
+                        Matcher m1 = p1.matcher(word1);
+                        if(!m1.find()){
+                            count++;
+                            System.out.println("WORD::::::::::"+word1);
+                        }
+                           //If Present increase the count by one                 
                     }
-                }
-                if (word.equals(input2)) //Search for the given word
-                {
-                    count++;
-                }
-                if (word.equals(input1)) {
-                    count = count + 2;
-                }
+            }
+            
+            else{
+                words = s.split(" ");  //Split the word using space
+                //String output = getStringBetweenTwoChars(s,start_char,end_char);
+                ///words = output.split(" ");
+                for (String word : words) {
+                    if (word.equals(input)) //Search for the given word
+                    {
+                        String output = getStringBetweenTwoChars(s, start_char, end_char);
+                        words1 = output.split(" ");
+                        for (String word1 : words1) {
+                            count++;    //If Present increase the count by one                 
+                        }
+                    }
+                    if (word.equals(input2)) //Search for the given word
+                    {
+                        count++;
+                    }
+                    if (word.equals(input1)) {
+                        count = count + 2;
+                    }
 
+                }
             }
             int cci = count + 1;//initializing the cci value
             ci=cci;
@@ -81,7 +105,7 @@ public class ci_calc {
         } else {
             System.out.println("Wrong Ci Value");
         }
-
+          System.out.println("///////////////CI C++ VALE::"+cvalue+"::////////////");
         fr.close();
         //update ci value to global result set
         
