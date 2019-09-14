@@ -108,7 +108,23 @@ public class Analysis extends javax.swing.JFrame {
     }
     
     final public void readFromText(){
+        
+        resultSet = new ArrayList<ProgramStatement>();
         System.out.println("Reading from text");
+        String[] copyarray = copyText.split("\\r?\\n");
+        
+        int count = 1;
+        
+        for(String s: copyarray){
+            
+            ProgramStatement ps = new ProgramStatement();
+            ps.setLineNumber(count);
+            ps.setLineContent(s);
+
+            resultSet.add(ps);
+
+            count++;
+        }
     }
     
     private final void closeApplication(){

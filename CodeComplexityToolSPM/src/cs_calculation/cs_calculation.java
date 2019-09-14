@@ -23,9 +23,10 @@ public class cs_calculation {
     public static final String REGEX_TEXT = "\".*?\"";
     public static final String REGEX_VARIABLE = "[a-z_]\\w*";
     public static final String REGEX_NUM = "\\d+";
-    public static final String REGEX_REMOVE = "public|static|else|try|return|new|delete|throws|throw|class";
+    public static final String REGEX_REMOVE = "public|static|else|try|return|new|delete|throws|throw|class|[\\/]\\/";
     public static final String REGEX_IMPORTS = "\\bimport\\b";
-    public static final String REGEX_COMMENTS = "[\\/\\/.*]";
+    public static final String REGEX_COMMENTS = "\\//.*";
+    public static final String REGEX_C = "extends|implements|:";
     
     
     private final Pattern pattern = Pattern.compile (REGEX_TWO);
@@ -42,6 +43,8 @@ public class cs_calculation {
     private final Pattern RemovePattern = Pattern.compile (REGEX_REMOVE);
     private final Pattern ImportPattern = Pattern.compile (REGEX_IMPORTS);
     private final Pattern CommentPattern = Pattern.compile (REGEX_COMMENTS);
+    private final Pattern CPattern = Pattern.compile (REGEX_C);
+    
     
     
    
@@ -73,7 +76,8 @@ public class cs_calculation {
             final Matcher numMatcher = NumPattern.matcher(currentLine);
             final Matcher removeMatcher = RemovePattern.matcher(currentLine);
             final Matcher importMatcher = ImportPattern.matcher(currentLine);
-             final Matcher commentMatcher = CommentPattern.matcher(currentLine);
+            final Matcher commentMatcher = CommentPattern.matcher(currentLine);
+            final Matcher cMatcher = CPattern.matcher(currentLine);
            
             
             while(matcher.find()){
@@ -146,6 +150,13 @@ public class cs_calculation {
               //  System.out.println("svalue increasing");
                 csValue--;
             }
+            
+            while(cMatcher.find()){
+              //  System.out.println("svalue increasing");
+                csValue++;
+            }
+            
+          
             
             
             

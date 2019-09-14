@@ -31,6 +31,8 @@ public class ci_calc {
     }
 
     public static int calc_ci() throws IOException {
+        
+        
         File f1 = new File(Analysis.filePath); //Creation of File Descriptor for input file
         String rgex1="(public|private|internal|protected)\\s[c]lass\\s([^\\s]+)\\s:";
         String rgex2="(public|private|internal|protected)";
