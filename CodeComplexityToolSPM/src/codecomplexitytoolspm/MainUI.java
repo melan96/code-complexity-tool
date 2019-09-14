@@ -5,18 +5,28 @@
  */
 package codecomplexitytoolspm;
 
+import static codecomplexitytoolspm.Analysis.resultSet;
+import database_management.DBConnection;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -26,6 +36,7 @@ public class MainUI extends javax.swing.JFrame {
     
     private Dimension dimension = null;
     public static ButtonGroup g = new ButtonGroup();
+    private Connection connection = null;
 
     /**
      * Creates new form MainUI
@@ -39,7 +50,19 @@ public class MainUI extends javax.swing.JFrame {
         g.add(fileradiobutton);
         g.add(textradiobutton);
         
-        codetextarea.setEnabled(false);                
+        try {
+            connection = (Connection) DBConnection.getConnection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        
+        codetextarea.setEnabled(false);      
+        
+        recentHistoryList.setFixedCellHeight(50);
+        recentHistoryList.setFixedCellWidth(100);
        
         
         //add allow listener
@@ -68,12 +91,57 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
         
-
+        
         
         fileradiobutton.setSelected(true);
         
+        loadRecentHistory();
+        
         //codetextarea.enable(false);
  
+    }
+    
+    final public void loadRecentHistory(){
+        
+        int fileID = 0;
+        String fileName = null;
+        Date date = null;
+        
+        try {
+            
+            String sqlStatement1 = "SELECT * FROM files";
+            PreparedStatement ps1 = connection.prepareStatement(sqlStatement1);
+    
+            final ResultSet rs1 = ps1.executeQuery();
+            
+            recentHistoryList.removeAll();
+            DefaultListModel list = new DefaultListModel();
+            list.clear();
+            
+            while(rs1.next()){
+                
+                fileID = rs1.getInt("file_id");
+                fileName = rs1.getString("file_name");
+                date = rs1.getDate("date");
+                
+                String listValue = "        " + fileID + "               " + fileName + "                " + date;
+                
+                list.addElement(listValue);
+                
+            }
+
+            recentHistoryList.setModel(list);
+            ps1.close();
+            rs1.close();
+            
+ 
+        } catch (SQLException ex) {
+            Logger.getLogger(Analysis.class.getName()).log(Level.SEVERE, null, ex);
+            final JOptionPane newOptionPane = new JOptionPane("Error - Problem encountered when retreiving recent history", JOptionPane.ERROR_MESSAGE);
+            final JDialog newDialog = newOptionPane.createDialog("Warning");
+            newDialog.setAlwaysOnTop(true);
+            newDialog.setVisible(true);
+        }
     }
 
     /**
@@ -97,6 +165,10 @@ public class MainUI extends javax.swing.JFrame {
         importFileButton = new javax.swing.JButton();
         setFilePathButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        recentHistoryList = new javax.swing.JList<>();
+        recentHistoryButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -140,6 +212,7 @@ public class MainUI extends javax.swing.JFrame {
         jScrollPane1.setViewportView(codetextarea);
 
         filePathTextField.setEditable(false);
+        filePathTextField.setBackground(new java.awt.Color(255, 255, 255));
         filePathTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filePathTextFieldActionPerformed(evt);
@@ -213,15 +286,61 @@ public class MainUI extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 24), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
 
+        recentHistoryList.setBackground(new java.awt.Color(30, 31, 41));
+        recentHistoryList.setBorder(new javax.swing.border.MatteBorder(null));
+        recentHistoryList.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        recentHistoryList.setForeground(new java.awt.Color(255, 255, 255));
+        recentHistoryList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        recentHistoryList.setAlignmentX(1.0F);
+        recentHistoryList.setSelectionBackground(new java.awt.Color(119, 255, 94));
+        recentHistoryList.setVisibleRowCount(10);
+        jScrollPane3.setViewportView(recentHistoryList);
+        recentHistoryList.getAccessibleContext().setAccessibleDescription("");
+
+        recentHistoryButton.setBackground(new java.awt.Color(119, 255, 94));
+        recentHistoryButton.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        recentHistoryButton.setForeground(new java.awt.Color(1, 1, 1));
+        recentHistoryButton.setText("View Report");
+        recentHistoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recentHistoryButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setBackground(new java.awt.Color(30, 31, 41));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Recent History");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 806, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 322, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(325, 325, 325))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(recentHistoryButton)
+                .addGap(325, 325, 325))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 706, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(35, 35, 35)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(recentHistoryButton)
+                .addGap(37, 37, 37))
         );
 
         jPanel3.setBackground(new java.awt.Color(30, 31, 41));
@@ -359,6 +478,10 @@ public class MainUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fileradiobuttonActionPerformed
 
+    private void recentHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recentHistoryButtonActionPerformed
+        System.out.println("Selected Value: " + recentHistoryList.getSelectedValue());
+    }//GEN-LAST:event_recentHistoryButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -403,10 +526,14 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JButton importFileButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton recentHistoryButton;
+    private javax.swing.JList<String> recentHistoryList;
     private javax.swing.JButton setFilePathButton;
     private javax.swing.JRadioButton textradiobutton;
     // End of variables declaration//GEN-END:variables

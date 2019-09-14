@@ -312,8 +312,13 @@ public class Analysis extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(241, 241, 241));
         jLabel1.setText("Code Analysis");
 
+        currentCodeTextArea.setEditable(false);
+        currentCodeTextArea.setBackground(new java.awt.Color(30, 31, 41));
         currentCodeTextArea.setColumns(20);
+        currentCodeTextArea.setForeground(new java.awt.Color(255, 255, 255));
         currentCodeTextArea.setRows(5);
+        currentCodeTextArea.setTabSize(4);
+        currentCodeTextArea.setBorder(null);
         jScrollPane1.setViewportView(currentCodeTextArea);
 
         updateButton.setText("Update");
