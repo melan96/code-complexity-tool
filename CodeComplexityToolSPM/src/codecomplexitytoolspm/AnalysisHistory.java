@@ -54,18 +54,19 @@ public class AnalysisHistory extends javax.swing.JFrame {
     public static String fileID = null;
     private static String fileName = null;
     private Connection connection = null;
+    private static MainUI MU = null;
     public static ArrayList<ProgramStatement> resultSet = null;
 
 
     /**
      * Creates new form MainUI
      */
-    public AnalysisHistory(String file_id, String file_name) {
+    public AnalysisHistory(String file_id, String file_name, MainUI mu) {
         initComponents();
         
         this.fileName= file_name;
         this.fileID = file_id;
-        
+        this.MU = mu;
 
         dimension = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
@@ -80,12 +81,27 @@ public class AnalysisHistory extends javax.swing.JFrame {
         }
         
         
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+           closeApplication();
+        }
+        });
+        
+        
         name.setText("Code Analysis Of " + fileName);
         
         displayFile();
         
 
     }
+    
+    private final void closeApplication(){
+        
+        MU.enable(true);
+        this.dispose();
+    }
+
     
     final public void displayFile() {
         
@@ -141,7 +157,7 @@ public class AnalysisHistory extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         historyTable = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
 
@@ -318,7 +334,7 @@ public class AnalysisHistory extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AnalysisHistory(fileID, fileName).setVisible(true);
+                new AnalysisHistory(fileID, fileName, MU).setVisible(true);
             }
         });
     }

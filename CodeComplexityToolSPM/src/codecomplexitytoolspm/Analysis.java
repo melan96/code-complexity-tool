@@ -8,6 +8,7 @@ package codecomplexitytoolspm;
 import Cr_Calculation.cr_calculation;
 import TWCalculations.TWCalculator;
 import cnC_calculation.CncCalculation;
+import static codecomplexitytoolspm.AnalysisHistory.fileID;
 import cs_calculation.cs_calculation;
 import ctc_calculation.CtcCalculation;
 import java.awt.Dimension;
@@ -41,6 +42,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import net.proteanit.sql.DbUtils;
 /**
  *
  * @author melan
@@ -52,7 +54,9 @@ public class Analysis extends javax.swing.JFrame {
     private static String copyText = null;
     private Connection connection = null;
     private String fileName  = null;
+    private int fileID = 0;
     private boolean fileUploadStatus = false;
+    private static MainUI MU = null;
 
     public static ArrayList<ProgramStatement> resultSet = null;
 
@@ -60,10 +64,10 @@ public class Analysis extends javax.swing.JFrame {
     /**
      * Creates new form MainUI
      */
-    public Analysis(String FilePath, String copyText) {
+    public Analysis(String FilePath, String copyText, MainUI mu) {
         initComponents();
         
-        
+        this.MU = mu;
 
         dimension = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
@@ -87,6 +91,13 @@ public class Analysis extends javax.swing.JFrame {
             readFromFile();
         }
         
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+           closeApplication();
+        }
+        });
+        
         name.setText("Code Analysis Of " + fileName);
         
         displayFile();
@@ -96,6 +107,12 @@ public class Analysis extends javax.swing.JFrame {
     
     final public void readFromText(){
         System.out.println("Reading from text");
+    }
+    
+    private final void closeApplication(){
+        
+        MU.enable(true);
+        this.dispose();
     }
 
     final public void readFromFile() {
@@ -136,6 +153,7 @@ public class Analysis extends javax.swing.JFrame {
         
         calculateValues();
         
+        /*
         //Inflate Details to JTable
         for (ProgramStatement ps : resultSet) {
            Object[] row = {ps.getLineNumber(),ps.getLineContent(),ps.getCsValue(), ps.getCtcValue(),ps.getCncValue(), ps.getCiValue(), ps.getTwValue(), ps.getCpsValue(), ps.getCrValue()};
@@ -144,7 +162,7 @@ public class Analysis extends javax.swing.JFrame {
                 TableColumnModel columnModel = jTable1.getColumnModel();
           
                 model.addRow(row);
-        }
+        } */
         
         if(fileUploadStatus == false){
             uploadFile();
@@ -153,12 +171,39 @@ public class Analysis extends javax.swing.JFrame {
         fileUploadStatus = true;
         
         
+        final String sqlStatement1 = "select line_number as 'Line Number', line_content as 'Program Statement', cs, ctc, cnc, ci, tw, cps, cr from file_content where file_id=? order by line_number";
+        try {
+            PreparedStatement ps1 = connection.prepareStatement(sqlStatement1);
+            ps1.setInt(1, fileID);
+            
+            final ResultSet rs1 = ps1.executeQuery();
+            
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs1));
+           
+            //change row height
+            jTable1.setRowHeight(30);
+            
+            
+            TableColumnModel columnModel = jTable1.getColumnModel();
+            columnModel.getColumn(0).setPreferredWidth(5);
+            columnModel.getColumn(1).setPreferredWidth(500);
+            columnModel.getColumn(2).setPreferredWidth(5);
+            columnModel.getColumn(3).setPreferredWidth(5);
+            columnModel.getColumn(4).setPreferredWidth(5);
+            columnModel.getColumn(5).setPreferredWidth(5);
+            columnModel.getColumn(6).setPreferredWidth(5);
+            columnModel.getColumn(7).setPreferredWidth(5);
+            columnModel.getColumn(8).setPreferredWidth(5);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AnalysisHistory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
 
     }
     
     final public void uploadFile(){
-        
-        int fileID = 0;
         
         try {
             
@@ -292,7 +337,7 @@ public class Analysis extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
 
@@ -324,6 +369,8 @@ public class Analysis extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setBackground(new java.awt.Color(30, 31, 41));
+        jTable1.setForeground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -463,7 +510,7 @@ public class Analysis extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Analysis(filePath, copyText).setVisible(true);
+                new Analysis(filePath, copyText, MU).setVisible(true);
             }
         });
     }

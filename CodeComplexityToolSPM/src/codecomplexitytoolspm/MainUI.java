@@ -459,7 +459,7 @@ public class MainUI extends javax.swing.JFrame {
                 newDialog.setVisible(true); 
             }
             else{
-                final Analysis analysis = new Analysis(filePath, null);
+                final Analysis analysis = new Analysis(filePath, null, this);
                 this.enable(false);
                 analysis.setVisible(true);
             }
@@ -474,7 +474,7 @@ public class MainUI extends javax.swing.JFrame {
                 newDialog.setVisible(true);
             }
             else{
-                final Analysis analysis = new Analysis(null, codetextarea.getText());
+                final Analysis analysis = new Analysis(null, codetextarea.getText(), this);
                 this.enable(false);
                 analysis.setVisible(true);
             }
@@ -496,7 +496,7 @@ public class MainUI extends javax.swing.JFrame {
         String[] stringArray = selectedValue.split("               ");
         System.out.println("File ID: " + stringArray[1]);
         System.out.println("File Name: " + stringArray[2]);
-        final AnalysisHistory ah = new AnalysisHistory(stringArray[1],stringArray[2]);
+        final AnalysisHistory ah = new AnalysisHistory(stringArray[1],stringArray[2], this);
         this.enable(false);
         ah.setVisible(true);
         
