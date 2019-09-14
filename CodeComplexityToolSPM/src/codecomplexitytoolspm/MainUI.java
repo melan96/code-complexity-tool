@@ -27,6 +27,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -60,6 +62,7 @@ public class MainUI extends javax.swing.JFrame {
         
         
         codetextarea.setEnabled(false);      
+        recentHistoryButton.setEnabled(false);
         
         recentHistoryList.setFixedCellHeight(50);
         recentHistoryList.setFixedCellWidth(100);
@@ -76,6 +79,15 @@ public class MainUI extends javax.swing.JFrame {
                 setFilePathButton.setEnabled(true);
 
             }
+        });
+        
+        recentHistoryList.addListSelectionListener(new ListSelectionListener(){
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                recentHistoryButton.setEnabled(true);
+            }
+            
+            
         });
         
         //add allow listener
@@ -109,7 +121,7 @@ public class MainUI extends javax.swing.JFrame {
         
         try {
             
-            String sqlStatement1 = "SELECT * FROM files";
+            String sqlStatement1 = "select * from files order by date desc limit 10;";
             PreparedStatement ps1 = connection.prepareStatement(sqlStatement1);
     
             final ResultSet rs1 = ps1.executeQuery();
@@ -124,7 +136,7 @@ public class MainUI extends javax.swing.JFrame {
                 fileName = rs1.getString("file_name");
                 date = rs1.getDate("date");
                 
-                String listValue = "        " + fileID + "               " + fileName + "                " + date;
+                String listValue = "               " + fileID + "               " + fileName + "               " + date;
                 
                 list.addElement(listValue);
                 
@@ -480,6 +492,14 @@ public class MainUI extends javax.swing.JFrame {
 
     private void recentHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recentHistoryButtonActionPerformed
         System.out.println("Selected Value: " + recentHistoryList.getSelectedValue());
+        String selectedValue = recentHistoryList.getSelectedValue();
+        String[] stringArray = selectedValue.split("               ");
+        System.out.println("File ID: " + stringArray[1]);
+        System.out.println("File Name: " + stringArray[2]);
+        final AnalysisHistory ah = new AnalysisHistory(stringArray[1],stringArray[2]);
+        this.enable(false);
+        ah.setVisible(true);
+        
     }//GEN-LAST:event_recentHistoryButtonActionPerformed
 
     /**
