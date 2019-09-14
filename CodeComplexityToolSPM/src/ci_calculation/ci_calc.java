@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ci_calc {
+    
 
     public static String getStringBetweenTwoChars(String input, String startChar, String endChar) {
         try {
@@ -31,9 +32,7 @@ public class ci_calc {
     }
 
     public static int calc_ci() throws IOException {
-        
-        
-        File f1 = new File(Analysis.filePath); //Creation of File Descriptor for input file
+        //File f1 = new File(Analysis.filePath); //Creation of File Descriptor for input file
         String rgex1="(public|private|internal|protected)\\s[c]lass\\s([^\\s]+)\\s:";
         String rgex2="(public|private|internal|protected)";
         Pattern p = Pattern.compile(rgex1);
@@ -41,8 +40,8 @@ public class ci_calc {
         String[] words = null;
         String[] words1 = null;//Intialize the word Array
         
-        FileReader fr = new FileReader(f1);  //Creation of File Reader object
-        BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+//        FileReader fr = new FileReader(f1);  //Creation of File Reader object
+       // BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
         
         String s;        
         String start_char = "implements ";
@@ -56,8 +55,10 @@ public class ci_calc {
         int cvalue=0;
         
             
-        while ((s = br.readLine()) != null) //Reading Content from the file
+        //Commented while ((s = br.readLine()) != null) //Reading Content from the file
+        for(int i=0; i < Analysis.resultSet.size(); i++)
         {
+            s=Analysis.resultSet.get(i).getLineContent();
             Matcher m = p.matcher(s);
             
             
@@ -110,7 +111,7 @@ public class ci_calc {
             System.out.println("Wrong Ci Value");
         }
           System.out.println("///////////////CI C++ VALE::"+cvalue+"::////////////");
-        fr.close();
+        //fr.close();
         //update ci value to global result set
         
         for(ProgramStatement ps : resultSet){
