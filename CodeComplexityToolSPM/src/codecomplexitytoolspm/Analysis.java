@@ -33,6 +33,8 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
+import cp_calculation_without_recursion.cp_calc_with_recursion;
+import cps_Calculations.CpsCalculation;
 import database_management.DBConnection;
 
 import java.io.FileOutputStream;
@@ -284,6 +286,16 @@ public class Analysis extends javax.swing.JFrame {
         cs_calculation cs = new cs_calculation();
         cs.csCalculate();
     }
+    
+    public void calculateCpsValue(){
+        CpsCalculation cps = new CpsCalculation();
+        cps.calculateCpsValues();
+    }
+    
+    public void calculateCpValue(){
+        cp_calc_with_recursion cp = new cp_calc_with_recursion();
+        cp.calculateCpValues();
+    }
 
     public void calculateCIValue() {
         try {
@@ -317,7 +329,9 @@ public class Analysis extends javax.swing.JFrame {
         calculateCIValue();
         calculateCsValue();
         calculateTWValue();
+        calculateCpsValue();
         calculateCrValue();
+        calculateCpValue();
     }
 
     /**

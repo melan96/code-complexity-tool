@@ -21,7 +21,7 @@ public class cp_calc_with_recursion {
                 progs.setCpValue(progs.getCpsValue());
             }
             else{
-                progs.setCpValue(progs.getCpsValue()*progs.getCrValue());
+                progs.setCpValue(progs.getCpsValue() + progs.getCrValue());
             }
             cpTotal=cpTotal+progs.getCpValue();
         }

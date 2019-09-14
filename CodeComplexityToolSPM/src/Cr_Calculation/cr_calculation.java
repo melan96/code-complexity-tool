@@ -120,14 +120,13 @@ public class cr_calculation {
     
     
     public void updateCrValue(){
-        
-        //Get the cpc values
-        int cpc = Analysis.resultSet.get(3).getCpsValue();
+
         
         if(recursionDetected==true){
             for(int i=start; i <= end; i++){
-            
-                Analysis.resultSet.get(i).setCrValue(15);
+                
+                int cpc = Analysis.resultSet.get(i).getCpsValue();
+                Analysis.resultSet.get(i).setCrValue(cpc);
             
             }
         }
