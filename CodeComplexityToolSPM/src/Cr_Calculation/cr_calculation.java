@@ -126,7 +126,7 @@ public class cr_calculation {
             for(int i=start; i <= end; i++){
                 
                 int cpc = Analysis.resultSet.get(i).getCpsValue();
-                Analysis.resultSet.get(i).setCrValue(cpc);
+                Analysis.resultSet.get(i).setCrValue(cpc * 2);
             
             }
         }
