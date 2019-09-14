@@ -42,12 +42,13 @@ import export_pdf.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 /**
  *
- * @author melan
+ * 
  */
 public class Analysis extends javax.swing.JFrame {
 
@@ -59,6 +60,7 @@ public class Analysis extends javax.swing.JFrame {
     private int fileID = 0;
     private boolean fileUploadStatus = false;
     private static MainUI MU = null;
+    private boolean copiedText = false;
 
     public static ArrayList<ProgramStatement> resultSet = null;
 
@@ -86,6 +88,7 @@ public class Analysis extends javax.swing.JFrame {
         
         if(FilePath == null && copyText != null){
             this.copyText = copyText;
+            this.copiedText = true;
             readFromText();
         }
         else if(FilePath != null && copyText == null){
@@ -130,6 +133,7 @@ public class Analysis extends javax.swing.JFrame {
     private final void closeApplication(){
         
         MU.enable(true);
+        MU.loadRecentHistory();
         this.dispose();
     }
 
@@ -182,6 +186,7 @@ public class Analysis extends javax.swing.JFrame {
                 model.addRow(row);
         } */
         
+        
         if(fileUploadStatus == false){
             uploadFile();
         }
@@ -223,12 +228,27 @@ public class Analysis extends javax.swing.JFrame {
     
     final public void uploadFile(){
         
+        
         try {
             
             String sqlStatement1 = "INSERT INTO files(file_name) VALUES(?)";
             PreparedStatement ps1 = connection.prepareStatement(sqlStatement1);
             
-            ps1.setString(1, fileName);
+            int n = 0;
+            if(copiedText == true){
+                Random rand = new Random();
+
+                // Obtain a number between [0 - 49].
+                n = rand.nextInt(5000000);
+                
+                ps1.setString(1, String.valueOf(n));
+            }
+            else{
+                           
+                ps1.setString(1, fileName);
+            }
+            
+ 
             
             ps1.executeUpdate();
             
@@ -237,7 +257,14 @@ public class Analysis extends javax.swing.JFrame {
             String sqlStatement2 = "SELECT * from files where file_name=?";
             PreparedStatement ps2 = connection.prepareStatement(sqlStatement2);
             
-            ps2.setString(1, fileName);
+            
+            if(copiedText){
+                ps2.setString(1, String.valueOf(n));
+            }
+            else{
+                ps2.setString(1, fileName);
+            }
+            
             
             final ResultSet rs1 = ps2.executeQuery();
             

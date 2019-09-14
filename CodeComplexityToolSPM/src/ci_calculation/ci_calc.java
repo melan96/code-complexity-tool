@@ -120,43 +120,48 @@ public class ci_calc {
         }
         return ci;
     }
+    
+    
+    //----------------------
+    
+//    public static void calc_line() throws IOException {
+//        File f1 = new File(Analysis.filePath); //Creation of File Descriptor for input file
+//        String[] words = null;
+//        String[] words1 = null;//Intialize the word Array
+//        FileReader fr = new FileReader(f1);  //Creation of File Reader object
+//        BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+//        //String a=br.lines().collect(Collectors.joining());
+//        //String b=a.replaceAll("\"/\\\\*(?:.|[\\\\n\\\\r])*?\\\\*/\"","");
+//        //System.out.println("removed new file//  " + b);
+//        String s;
+//
+//        int count = 0;   //Intialize the word to zero
+//        int count1 = 0;
+//
+//        while ((s = br.readLine()) != null) //Reading Content from the file
+//        {
+//            words = s.split(" ");  //Split the word using space
+//
+//            innerloop:
+//            for (String word : words) {
+//                if (word.equals("}") || word.equals("class") || word.equals("else {") || word.equals("import") || word.equals("package") || s.isEmpty())// || word.equals("} catch")) //Search for the given word
+//                {
+//                    //System.out.println("SKIPPING  " + s);
+//                    count1++;
+//                }
+//            }
+//            count++;
+//        }
+//        int total = count - count1;
+//        if (total != 0) //Check for count not equal to zero
+//        {
+//            //System.out.println("Line count" + total);
+//        } else {
+//            //System.out.println("No lines");
+//        }
+//
+//        fr.close();
+//    }
 
-    public static void calc_line() throws IOException {
-        File f1 = new File(Analysis.filePath); //Creation of File Descriptor for input file
-        String[] words = null;
-        String[] words1 = null;//Intialize the word Array
-        FileReader fr = new FileReader(f1);  //Creation of File Reader object
-        BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
-        //String a=br.lines().collect(Collectors.joining());
-        //String b=a.replaceAll("\"/\\\\*(?:.|[\\\\n\\\\r])*?\\\\*/\"","");
-        //System.out.println("removed new file//  " + b);
-        String s;
-
-        int count = 0;   //Intialize the word to zero
-        int count1 = 0;
-
-        while ((s = br.readLine()) != null) //Reading Content from the file
-        {
-            words = s.split(" ");  //Split the word using space
-
-            innerloop:
-            for (String word : words) {
-                if (word.equals("}") || word.equals("class") || word.equals("else {") || word.equals("import") || word.equals("package") || s.isEmpty())// || word.equals("} catch")) //Search for the given word
-                {
-                    //System.out.println("SKIPPING  " + s);
-                    count1++;
-                }
-            }
-            count++;
-        }
-        int total = count - count1;
-        if (total != 0) //Check for count not equal to zero
-        {
-            //System.out.println("Line count" + total);
-        } else {
-            //System.out.println("No lines");
-        }
-
-        fr.close();
-    }
+    
 }

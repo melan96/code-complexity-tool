@@ -99,6 +99,7 @@ public class AnalysisHistory extends javax.swing.JFrame {
     private final void closeApplication(){
         
         MU.enable(true);
+        MU.loadRecentHistory();
         this.dispose();
     }
 
